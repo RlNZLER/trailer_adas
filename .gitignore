@@ -162,4 +162,4 @@ cython_debug/
 #.idea/
 
 # Meshes
-src/single-trailer-assembly/meshes/
+src/single_trailer_assembly/meshes

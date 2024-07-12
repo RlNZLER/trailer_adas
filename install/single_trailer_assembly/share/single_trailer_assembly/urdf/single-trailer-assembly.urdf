@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  xmlns:xacro="http://www.ros.org/wiki/xacro"
+  name="single_trailer_assembly">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.0133664812595575 -5.07580647006664E-11 0.504334048629493"
+        rpy="0 0 0" />
+      <mass
+        value="5623.70261925949" />
+      <inertia
+        ixx="1504.92873167937"
+        ixy="6.28263899085449E-07"
+        ixz="-100.79395439342"
+        iyy="7946.38521961247"
+        iyz="-7.12382411177824E-08"
+        izz="8460.84959033347" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="b_front_left_linkage">
+    <inertial>
+      <origin
+        xyz="2.01833247004402E-07 0.0866174322359835 0.114144894811921"
+        rpy="0 0 0" />
+      <mass
+        value="4.04562727792635" />
+      <inertia
+        ixx="0.140037164042004"
+        ixy="5.57435821150625E-08"
+        ixz="-2.08850902311321E-08"
+        iyy="0.0827902917589038"
+        iyz="0.0400096165626046"
+        izz="0.0604906292211793" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_front_left_linkage.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_front_left_linkage.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="b_front_left_linkage_joint"
+    type="revolute">
+    <origin
+      xyz="1.46 0.3625 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="b_front_left_linkage" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.5"
+      upper="0.5"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="b_front_left_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="74.1907633489725" />
+      <inertia
+        ixx="2.08218966287404"
+        ixy="-1.30089087994337E-17"
+        ixz="5.1605164674113E-17"
+        iyy="3.08830412900736"
+        iyz="7.48293486257905E-18"
+        izz="2.08218966287404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_front_left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_front_left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="b_front_left_joint"
+    type="revolute">
+    <origin
+      xyz="0 0.2275 0"
+      rpy="0 0 0" />
+    <parent
+      link="b_front_left_linkage" />
+    <child
+      link="b_front_left_wheel" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="b_front_right_linkage">
+    <inertial>
+      <origin
+        xyz="-2.01833246116223E-07 -0.0866174322359831 0.114144894811923"
+        rpy="0 0 0" />
+      <mass
+        value="4.04562727792644" />
+      <inertia
+        ixx="0.140037164042006"
+        ixy="5.57435820882623E-08"
+        ixz="2.08850901566751E-08"
+        iyy="0.0827902917589053"
+        iyz="-0.0400096165626047"
+        izz="0.0604906292211793" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_front_right_linkage.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_front_right_linkage.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="b_front_right_linkage_joint"
+    type="revolute">
+    <origin
+      xyz="1.46 -0.3625 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="b_front_right_linkage" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.5"
+      upper="0.5"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="b_front_right_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="74.1907633489725" />
+      <inertia
+        ixx="2.08218966287404"
+        ixy="1.28145530038214E-18"
+        ixz="-2.40294106238822E-16"
+        iyy="3.08830412900736"
+        iyz="-2.41880721526122E-18"
+        izz="2.08218966287404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_front_right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_front_right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="b_front_right_joint"
+    type="revolute">
+    <origin
+      xyz="0 -0.2275 0"
+      rpy="0 0 0" />
+    <parent
+      link="b_front_right_linkage" />
+    <child
+      link="b_front_right_wheel" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="b_back_left_wheel">
+    <inertial>
+      <origin
+        xyz="0 -1.11022302462516E-16 0"
+        rpy="0 0 0" />
+      <mass
+        value="74.1907633489725" />
+      <inertia
+        ixx="2.08218966287404"
+        ixy="-3.48598814788576E-15"
+        ixz="9.86076131526265E-32"
+        iyy="3.08830412900736"
+        iyz="-1.23785934175428E-30"
+        izz="2.08218966287404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_back_left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_back_left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="b_back_left_joint"
+    type="revolute">
+    <origin
+      xyz="-1.17 0.6125 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="b_back_left_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="b_back_right_wheel">
+    <inertial>
+      <origin
+        xyz="0 1.11022302462516E-16 0"
+        rpy="0 0 0" />
+      <mass
+        value="74.1907633489725" />
+      <inertia
+        ixx="2.08218966287404"
+        ixy="3.48598814788576E-15"
+        ixz="9.86076131526265E-32"
+        iyy="3.08830412900736"
+        iyz="1.22529057414273E-30"
+        izz="2.08218966287404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_back_right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/b_back_right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="b_back_right_joint"
+    type="revolute">
+    <origin
+      xyz="-1.17 -0.6125 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="b_back_right_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="trailer">
+    <inertial>
+      <origin
+        xyz="0.00442147901490841 -1.93479626032503E-16 0.0381335014738863"
+        rpy="0 0 0" />
+      <mass
+        value="2461.70630024305" />
+      <inertia
+        ixx="548.627112313706"
+        ixy="-7.55825540790616E-14"
+        ixz="1.90768805911008"
+        iyy="1433.47760714364"
+        iyz="3.45359653404504E-14"
+        izz="1743.78406934508" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/trailer.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/trailer.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="trailer_joint"
+    type="revolute">
+    <origin
+      xyz="-4.5815 0 0.38996"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="trailer" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1"
+      upper="1"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="t_front_left_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 1.11022302462516E-16"
+        rpy="0 0 0" />
+      <mass
+        value="74.1907633489725" />
+      <inertia
+        ixx="2.08218966287404"
+        ixy="3.68854120901134E-17"
+        ixz="-7.9244016524326E-32"
+        iyy="3.08830412900736"
+        iyz="-6.26636119034903E-17"
+        izz="2.08218966287404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/t_front_left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/t_front_left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="t_front_left_joint"
+    type="revolute">
+    <origin
+      xyz="0.53575 0.6125 -0.38996"
+      rpy="0 0 0" />
+    <parent
+      link="trailer" />
+    <child
+      link="t_front_left_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="t_front_right_wheel">
+    <inertial>
+      <origin
+        xyz="4.44089209850063E-16 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="74.1907633489725" />
+      <inertia
+        ixx="2.08218966287404"
+        ixy="-3.68854120901134E-17"
+        ixz="-7.88853719605921E-32"
+        iyy="3.08830412900736"
+        iyz="-7.80658300851281E-17"
+        izz="2.08218966287404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/t_front_right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/t_front_right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="t_front_right_joint"
+    type="revolute">
+    <origin
+      xyz="0.53575 -0.6125 -0.38996"
+      rpy="0 0 0" />
+    <parent
+      link="trailer" />
+    <child
+      link="t_front_right_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="t_back_left_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="74.1907633489725" />
+      <inertia
+        ixx="2.08218966287404"
+        ixy="7.13254465120665E-17"
+        ixz="7.28624699975923E-33"
+        iyy="3.08830412900736"
+        iyz="3.98256998387972E-18"
+        izz="2.08218966287404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/t_back_left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/t_back_left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="t_back_left_joint"
+    type="revolute">
+    <origin
+      xyz="-0.53575 0.6125 -0.38996"
+      rpy="0 0 0" />
+    <parent
+      link="trailer" />
+    <child
+      link="t_back_left_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="t_back_right_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="74.1907633489725" />
+      <inertia
+        ixx="2.08218966287404"
+        ixy="-7.13254465120665E-17"
+        ixz="6.90280642601818E-33"
+        iyy="3.08830412900736"
+        iyz="-3.98256998387974E-18"
+        izz="2.08218966287404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/t_back_right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://single_trailer_assembly/meshes/t_back_right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="t_back_right_joint"
+    type="revolute">
+    <origin
+      xyz="-0.53575 -0.6125 -0.38996"
+      rpy="0 0 0" />
+    <parent
+      link="trailer" />
+    <child
+      link="t_back_right_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>
