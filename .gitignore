@@ -163,3 +163,4 @@ cython_debug/
 
 # Meshes
 src/single_trailer_assembly/meshes
+src/trailer_description/meshes
