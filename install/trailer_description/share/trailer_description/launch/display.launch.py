@@ -8,13 +8,15 @@ from launch.substitutions import Command, LaunchConfiguration
 
 def generate_launch_description():
 
+    trailer_description = get_package_share_directory('trailer_description')
+    
     model_arg = DeclareLaunchArgument(
         name='model',
-        default_value=os.path.join(get_package_share_directory('trailer_description'), 'urdf', 'trailer.urdf.xacro'), 
+        default_value=os.path.join(trailer_description, 'urdf', 'trailer.urdf.xacro'), 
         description='Absolute path to robot urdf file'
     )
     
-    robot_description = ParameterValue(Command(['xacro ', LaunchConfiguration("model")]), value_type=str)
+    robot_description = ParameterValue(Command(['xacro', LaunchConfiguration("model")]), value_type=str)
     
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
