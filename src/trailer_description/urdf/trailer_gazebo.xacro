@@ -2,6 +2,22 @@
 
 <robot name="trailer" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <transmission name="left_wheel_transmission">
+        <plugin>transmission_interface/SimpleTransmission</plugin>
+        <actuator name="left_wheel_motor" role="actuator_left"/>
+        <joint name="b_back_left_wheel_joint" role="joint_left">
+            <mechanicalReduction>1.0</mechanicalReduction>
+        </joint>
+    </transmission>
+
+    <transmission name="right_wheel_transmission">
+        <plugin>transmission_interface/SimpleTransmission</plugin>
+        <actuator name="right_wheel_motor" role="actuator_right"/>
+        <joint name="b_back_right_wheel_joint" role="joint_right">
+            <mechanicalReduction>1.0</mechanicalReduction>
+        </joint>
+    </transmission>
+
     <gazebo reference="b_front_left_wheel">
         <mu1>100000000000000.0</mu1>
         <mu2>100000000000000.0</mu2>
@@ -60,6 +76,14 @@
         <minDepth>0.001</minDepth>
         <maxVel>0.1</maxVel>
         <fdir1>0 -1 0</fdir1>
+    </gazebo>
+
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <robot_param>robot_description</robot_param>
+            <robot_param_node>robot_state_publisher</robot_param_node>
+            <parameters></parameters>
+        </plugin>
     </gazebo>
 
 </robot>
