@@ -4,6 +4,7 @@
   name="trailer">
 
   <xacro:include filename="$(find trailer_description)/urdf/trailer_gazebo.xacro"/>
+  <xacro:include filename="$(find trailer_description)/urdf/trailer_ros2_control.xacro"/>
 
   <link name="base_footprint"/>  
   <link
