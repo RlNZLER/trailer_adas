@@ -7,8 +7,9 @@ endif()
 
 
 find_package(ament_cmake REQUIRED)
+
 install(
-  DIRECTORY config 
+  DIRECTORY config launch
   DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)

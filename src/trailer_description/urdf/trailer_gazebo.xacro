@@ -18,6 +18,22 @@
         </joint>
     </transmission>
 
+    <transmission name="left_linkage_transmission">
+        <plugin>transmission_interface/SimpleTransmission</plugin>
+        <actuator name="left_linkage_actuator" role="actuator_left"/>
+        <joint name="b_front_left_linkage_joint" role="joint_left">
+            <mechanicalReduction>1.0</mechanicalReduction>
+        </joint>
+    </transmission>
+    
+    <transmission name="right_linkage_transmission">
+        <plugin>transmission_interface/SimpleTransmission</plugin>
+        <actuator name="right_linkage_actuator" role="actuator_right"/>
+        <joint name="b_front_right_linkage_joint" role="joint_right">
+            <mechanicalReduction>1.0</mechanicalReduction>
+        </joint>
+    </transmission>
+    
     <gazebo reference="b_front_left_wheel">
         <mu1>100000000000000.0</mu1>
         <mu2>100000000000000.0</mu2>
@@ -82,7 +98,7 @@
         <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
             <robot_param>robot_description</robot_param>
             <robot_param_node>robot_state_publisher</robot_param_node>
-            <parameters>find trailer_controller/config/trailer_controller.yaml</parameters>
+            <parameters>$(find trailer_controller)/config/trailer_controller.yaml</parameters>
         </plugin>
     </gazebo>
 

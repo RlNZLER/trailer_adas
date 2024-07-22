@@ -1,5 +1,5 @@
 controller_manager:
-  ros_parameters:
+  ros__parameters:
     update_rate: 100
     use_sim_time: true
 
@@ -9,8 +9,18 @@ controller_manager:
     simple_velocity_controller:
       type: velocity_controllers/JointGroupVelocityController
 
+    steering_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+
 simple_velocity_controller:
-  ros_parameters:
+  ros__parameters:
     joints:
       - b_back_left_wheel_joint
       - b_back_right_wheel_joint
+
+steering_position_controller:
+  ros__parameters:
+    joints:
+      - b_front_left_linkage_joint
+      - b_front_right_linkage_joint
