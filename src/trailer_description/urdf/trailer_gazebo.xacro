@@ -34,6 +34,26 @@
         </joint>
     </transmission>
     
+    <gazebo reference="steer_left">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
+        <kp>50000.0</kp>
+        <kd>50.0</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>0.1</maxVel>
+        <fdir1>0 -1 0</fdir1>
+    </gazebo>
+    
+    <gazebo reference="steer_right">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
+        <kp>50000.0</kp>
+        <kd>50.0</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>0.1</maxVel>
+        <fdir1>0 1 0</fdir1>
+    </gazebo>
+    
     <gazebo reference="front_left_wheel">
         <mu1>100000000000000.0</mu1>
         <mu2>100000000000000.0</mu2>
@@ -74,6 +94,16 @@
         <fdir1>0 -1 0</fdir1>
     </gazebo>
 
+    <gazebo reference="trailer">
+        <mu1>0.7</mu1>
+        <mu2>0.7</mu2>
+        <kp>1e5</kp>
+        <kd>100.0</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>0.1</maxVel>
+        <fdir1>0 0 1</fdir1>
+    </gazebo>
+
     <gazebo reference="t_left_wheel">
         <mu1>100000000000000.0</mu1>
         <mu2>100000000000000.0</mu2>
@@ -94,12 +124,12 @@
         <fdir1>0 -1 0</fdir1>
     </gazebo>
 
-    <gazebo>
+    <!-- <gazebo>
         <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
             <robot_param>robot_description</robot_param>
             <robot_param_node>robot_state_publisher</robot_param_node>
             <parameters>$(find trailer_controller)/config/trailer_controller.yaml</parameters>
         </plugin>
-    </gazebo>
+    </gazebo> -->
 
 </robot>

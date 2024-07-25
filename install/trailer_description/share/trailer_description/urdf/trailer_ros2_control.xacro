@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<robot name="trailer" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="GazeboSystem" xmlns:xacro="http://www.ros.org/wiki/xacro">
     <ros2_control type="system" name="RobotSystem">
         <hardware>
             <plugin>gazebo_ros2_control/GazeboSystem</plugin>
@@ -44,5 +44,9 @@
             <state_interface name="velocity"/>
         </joint>
     </ros2_control>
-
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find trailer_controller)/config/ackermann_steering_controller_params.yaml</parameters>
+        </plugin>
+    </gazebo>
 </robot>
