@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  xmlns:xacro="http://www.ros.org/wiki/xacro"
-  name="trailer">
-
-  <xacro:include filename="$(find trailer_description)/urdf/trailer_gazebo.xacro"/>
-  <xacro:include filename="$(find trailer_description)/urdf/trailer_ros2_control.xacro"/>
-
-  <link name="base_footprint"/>  
+  name="trailer_assembly">
   <link
     name="base_link">
     <inertial>
@@ -29,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/base_link.STL" />
+          filename="package://trailer_assembly/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -43,15 +40,10 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/base_link.STL" />
+          filename="package://trailer_assembly/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
-  <joint name="base_joint" type="fixed">
-    <origin xyz="0 0 0.28575" rpy="0 0 0"/>
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
-  </joint>
   <link
     name="steer_left">
     <inertial>
@@ -74,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/steer_left.STL" />
+          filename="package://trailer_assembly/meshes/steer_left.STL" />
       </geometry>
       <material
         name="">
@@ -88,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/steer_left.STL" />
+          filename="package://trailer_assembly/meshes/steer_left.STL" />
       </geometry>
     </collision>
   </link>
@@ -105,10 +97,10 @@
     <axis
       xyz="0 0 -1" />
     <limit
-      lower="-0.5"
-      upper="0.5"
-      effort="50"
-      velocity="1.5" />
+      lower="0"
+      upper="0"
+      effort="100"
+      velocity="31.4" />
   </joint>
   <link
     name="front_left_wheel">
@@ -132,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/front_left_wheel.STL" />
+          filename="package://trailer_assembly/meshes/front_left_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -146,7 +138,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/front_left_wheel.STL" />
+          filename="package://trailer_assembly/meshes/front_left_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -162,9 +154,6 @@
       link="front_left_wheel" />
     <axis
       xyz="0 1 0" />
-      <limit
-      effort="100"
-      velocity="31.4" />
   </joint>
   <link
     name="steer_right">
@@ -188,7 +177,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/steer_right.STL" />
+          filename="package://trailer_assembly/meshes/steer_right.STL" />
       </geometry>
       <material
         name="">
@@ -202,7 +191,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/steer_right.STL" />
+          filename="package://trailer_assembly/meshes/steer_right.STL" />
       </geometry>
     </collision>
   </link>
@@ -219,10 +208,10 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="-0.5"
-      upper="0.5"
-      effort="50"
-      velocity="1.5" />
+      lower="0"
+      upper="0"
+      effort="100"
+      velocity="31.4" />
   </joint>
   <link
     name="front_right_wheel">
@@ -246,7 +235,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/front_right_wheel.STL" />
+          filename="package://trailer_assembly/meshes/front_right_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -260,7 +249,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/front_right_wheel.STL" />
+          filename="package://trailer_assembly/meshes/front_right_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -276,9 +265,6 @@
       link="front_right_wheel" />
     <axis
       xyz="0 1 0" />
-      <limit
-      effort="100"
-      velocity="31.4" />
   </joint>
   <link
     name="rear_left_wheel">
@@ -302,7 +288,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/rear_left_wheel.STL" />
+          filename="package://trailer_assembly/meshes/rear_left_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -316,7 +302,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/rear_left_wheel.STL" />
+          filename="package://trailer_assembly/meshes/rear_left_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -333,6 +319,8 @@
     <axis
       xyz="0 1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
@@ -358,7 +346,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/rear_right_wheel.STL" />
+          filename="package://trailer_assembly/meshes/rear_right_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -372,7 +360,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/rear_right_wheel.STL" />
+          filename="package://trailer_assembly/meshes/rear_right_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -389,6 +377,8 @@
     <axis
       xyz="0 1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
@@ -414,7 +404,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/trailer.STL" />
+          filename="package://trailer_assembly/meshes/trailer.STL" />
       </geometry>
       <material
         name="">
@@ -428,7 +418,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/trailer.STL" />
+          filename="package://trailer_assembly/meshes/trailer.STL" />
       </geometry>
     </collision>
   </link>
@@ -472,7 +462,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/t_left_wheel.STL" />
+          filename="package://trailer_assembly/meshes/t_left_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -486,7 +476,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/t_left_wheel.STL" />
+          filename="package://trailer_assembly/meshes/t_left_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -503,6 +493,8 @@
     <axis
       xyz="0 -1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
@@ -528,7 +520,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/t_right_wheel.STL" />
+          filename="package://trailer_assembly/meshes/t_right_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -542,7 +534,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/t_right_wheel.STL" />
+          filename="package://trailer_assembly/meshes/t_right_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -559,6 +551,8 @@
     <axis
       xyz="0 -1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>

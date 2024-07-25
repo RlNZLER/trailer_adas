@@ -11,17 +11,17 @@
     name="base_link">
     <inertial>
       <origin
-        xyz="0.0151794504413044 -2.72871741278684E-16 0.504333281484515"
+        xyz="0.0145343749103901 -4.8067090025433E-11 0.504525903309878"
         rpy="0 0 0" />
       <mass
-        value="5623.96238078164" />
+        value="5621.45261479066" />
       <inertia
-        ixx="1505.2735842584"
-        ixy="3.7224720704788E-14"
-        ixz="-96.1203292275202"
-        iyy="7932.64531285603"
-        iyz="-2.22978883011256E-14"
-        izz="8447.43080900142" />
+        ixx="1504.39932306857"
+        ixy="5.67577165358734E-07"
+        ixz="-97.6855056473575"
+        iyy="7926.87309013488"
+        iyz="-6.11751972034413E-08"
+        izz="8441.84332873847" />
     </inertial>
     <visual>
       <origin
@@ -53,20 +53,20 @@
     <child link="base_link"/>
   </joint>
   <link
-    name="steer_left">
+    name="left_linkage">
     <inertial>
       <origin
-        xyz="0 0 1.11022302462516E-16"
+        xyz="2.01833246560312E-07 0.086617432235983 0.114144894811922"
         rpy="0 0 0" />
       <mass
-        value="1.48283173249438" />
+        value="4.04562727792638" />
       <inertia
-        ixx="0.0113467519863581"
-        ixy="4.92526541296846E-36"
-        ixz="0"
-        iyy="0.00118626538599551"
-        iyz="4.00998451212503E-35"
-        izz="0.0113467519863581" />
+        ixx="0.140037164042005"
+        ixy="5.57435821298368E-08"
+        ixz="-2.08850902365895E-08"
+        iyy="0.0827902917589043"
+        iyz="0.0400096165626049"
+        izz="0.0604906292211796" />
     </inertial>
     <visual>
       <origin
@@ -74,7 +74,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/steer_left.STL" />
+          filename="package://trailer_description/meshes/left_linkage.STL" />
       </geometry>
       <material
         name="">
@@ -88,22 +88,22 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/steer_left.STL" />
+          filename="package://trailer_description/meshes/left_linkage.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="steer_left_joint"
+    name="left_linkage_joint"
     type="revolute">
     <origin
-      xyz="1.46 0.6125 0"
+      xyz="1.46 0.385 0"
       rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
-      link="steer_left" />
+      link="left_linkage" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="-0.5"
       upper="0.5"
@@ -114,16 +114,16 @@
     name="front_left_wheel">
     <inertial>
       <origin
-        xyz="0 0 -1.11022302462516E-16"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
         value="74.1907633489725" />
       <inertia
         ixx="2.08218966287404"
-        ixy="6.07695317678125E-17"
-        ixz="-3.14934790723029E-18"
+        ixy="-1.30089087994337E-17"
+        ixz="5.1605164674113E-17"
         iyy="3.08830412900736"
-        iyz="3.93136225252298E-18"
+        iyz="7.48293486257905E-18"
         izz="2.08218966287404" />
     </inertial>
     <visual>
@@ -154,33 +154,33 @@
     name="front_left_wheel_joint"
     type="continuous">
     <origin
-      xyz="0 0 0"
+      xyz="0 0.2275 0"
       rpy="0 0 0" />
     <parent
-      link="steer_left" />
+      link="left_linkage" />
     <child
       link="front_left_wheel" />
     <axis
-      xyz="0 1 0" />
-      <limit
+      xyz="0 -1 0" />
+    <limit
       effort="100"
       velocity="31.4" />
   </joint>
   <link
-    name="steer_right">
+    name="right_linkage">
     <inertial>
       <origin
-        xyz="0 0 1.11022302462516E-16"
+        xyz="-2.01833246560312E-07 -0.0866174322359837 0.114144894811921"
         rpy="0 0 0" />
       <mass
-        value="1.48283173249438" />
+        value="4.04562727792638" />
       <inertia
-        ixx="0.0113467519863581"
-        ixy="4.92526541296846E-36"
-        ixz="0"
-        iyy="0.00118626538599551"
-        iyz="4.00998451212503E-35"
-        izz="0.0113467519863581" />
+        ixx="0.140037164042004"
+        ixy="5.5743582091201E-08"
+        ixz="2.08850901407819E-08"
+        iyy="0.0827902917589041"
+        iyz="-0.0400096165626044"
+        izz="0.0604906292211791" />
     </inertial>
     <visual>
       <origin
@@ -188,7 +188,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/steer_right.STL" />
+          filename="package://trailer_description/meshes/right_linkage.STL" />
       </geometry>
       <material
         name="">
@@ -202,20 +202,20 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://trailer_description/meshes/steer_right.STL" />
+          filename="package://trailer_description/meshes/right_linkage.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="steer_right_joint"
+    name="right_linkage_joint"
     type="revolute">
     <origin
-      xyz="1.46 -0.6125 0"
+      xyz="1.46 -0.385 0"
       rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
-      link="steer_right" />
+      link="right_linkage" />
     <axis
       xyz="0 0 1" />
     <limit
@@ -228,16 +228,16 @@
     name="front_right_wheel">
     <inertial>
       <origin
-        xyz="0 0 -1.11022302462516E-16"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
         value="74.1907633489725" />
       <inertia
         ixx="2.08218966287404"
-        ixy="6.07695317678125E-17"
-        ixz="1.71424910145489E-17"
+        ixy="1.28145530038214E-18"
+        ixz="-1.7099551738079E-16"
         iyy="3.08830412900736"
-        iyz="1.83241460922682E-18"
+        iyz="-2.68534024933067E-18"
         izz="2.08218966287404" />
     </inertial>
     <visual>
@@ -268,15 +268,15 @@
     name="front_right_wheel_joint"
     type="continuous">
     <origin
-      xyz="0 0 0"
+      xyz="0 -0.2275 0"
       rpy="0 0 0" />
     <parent
-      link="steer_right" />
+      link="right_linkage" />
     <child
       link="front_right_wheel" />
     <axis
-      xyz="0 1 0" />
-      <limit
+      xyz="0 -1 0" />
+    <limit
       effort="100"
       velocity="31.4" />
   </joint>
@@ -396,16 +396,16 @@
     name="trailer">
     <inertial>
       <origin
-        xyz="-2.06473943000056 -9.59060549514745E-17 0.256889099220807"
+        xyz="-2.06473943000056 -9.13851883438585E-17 0.256889099220807"
         rpy="0 0 0" />
       <mass
         value="2715.11151397176" />
       <inertia
         ixx="634.919956534306"
-        ixy="7.66014195843368E-14"
-        ixz="9.29453456945521"
+        ixy="7.69341401721132E-14"
+        ixz="9.2945345694552"
         iyy="1640.30654615615"
-        iyz="4.53164968888437E-15"
+        iyz="5.72407813967429E-15"
         izz="2004.11171155846" />
     </inertial>
     <visual>

@@ -18,18 +18,18 @@
         </joint>
     </transmission>
 
-    <transmission name="left_linkage_transmission">
+    <transmission name="left_steer_transmission">
         <plugin>transmission_interface/SimpleTransmission</plugin>
-        <actuator name="left_linkage_actuator" role="actuator_left"/>
-        <joint name="left_linkage_joint" role="joint_left">
+        <actuator name="left_steer_actuator" role="actuator_left"/>
+        <joint name="steer_left_joint" role="joint_left">
             <mechanicalReduction>1.0</mechanicalReduction>
         </joint>
     </transmission>
     
-    <transmission name="right_linkage_transmission">
+    <transmission name="right_steer_transmission">
         <plugin>transmission_interface/SimpleTransmission</plugin>
-        <actuator name="right_linkage_actuator" role="actuator_right"/>
-        <joint name="right_linkage_joint" role="joint_right">
+        <actuator name="right_steer_actuator" role="actuator_right"/>
+        <joint name="steer_right_joint" role="joint_right">
             <mechanicalReduction>1.0</mechanicalReduction>
         </joint>
     </transmission>
