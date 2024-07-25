@@ -7,7 +7,7 @@
         </hardware>
 
         <!-- Back wheel joints -->    
-        <joint name="b_back_left_wheel_joint">
+        <joint name="rear_left_wheel_joint">
             <command_interface name="velocity">
                 <param name="min">-1</param>
                 <param name="max">1</param>
@@ -16,7 +16,7 @@
             <state_interface name="velocity"/>
         </joint>
 
-        <joint name="b_back_right_wheel_joint">
+        <joint name="rear_right_wheel_joint">
             <command_interface name="velocity">
                 <param name="min">-1</param>
                 <param name="max">1</param>
@@ -26,7 +26,7 @@
         </joint>
 
         <!-- Steering linkage joints -->
-        <joint name="b_front_left_linkage_joint">
+        <joint name="left_linkage_joint">
             <command_interface name="position">
                 <param name="min">-0.5</param>
                 <param name="max">0.5</param>
@@ -35,7 +35,7 @@
             <state_interface name="velocity"/>
         </joint>
 
-        <joint name="b_front_right_linkage_joint">
+        <joint name="right_linkage_joint">
             <command_interface name="position">
                 <param name="min">-0.5</param>
                 <param name="max">0.5</param>
