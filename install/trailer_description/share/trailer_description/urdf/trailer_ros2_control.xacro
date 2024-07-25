@@ -6,7 +6,7 @@
             <plugin>gazebo_ros2_control/GazeboSystem</plugin>
         </hardware>
 
-        <!-- Back wheel joints -->    
+        <!-- Rear wheel joints -->    
         <joint name="rear_left_wheel_joint">
             <command_interface name="velocity">
                 <param name="min">-1</param>
@@ -44,9 +44,9 @@
             <state_interface name="velocity"/>
         </joint>
     </ros2_control>
-    <gazebo>
+    <!-- <gazebo>
         <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
             <parameters>$(find trailer_controller)/config/ackermann_steering_controller_params.yaml</parameters>
         </plugin>
-    </gazebo>
+    </gazebo> -->
 </robot>

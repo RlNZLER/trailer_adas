@@ -16,11 +16,11 @@ controller_manager:
 simple_velocity_controller:
   ros__parameters:
     joints:
-      - b_back_left_wheel_joint
-      - b_back_right_wheel_joint
+      - rear_left_wheel_joint
+      - rear_right_wheel_joint
 
 steering_position_controller:
   ros__parameters:
     joints:
-      - b_front_left_linkage_joint
-      - b_front_right_linkage_joint
+      - steer_left_joint
+      - steer_right_joint
