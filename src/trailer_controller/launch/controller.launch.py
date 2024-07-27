@@ -34,8 +34,19 @@ def generate_launch_description():
         ],
     )
     
+    ackermann_steering_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "ackermann_steering_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+    
     return LaunchDescription([
         joint_state_broadcaster_spawner,
         simple_velocity_controller,
-        steering_position_controller
+        steering_position_controller,
+        ackermann_steering_controller
     ])
