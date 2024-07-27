@@ -25,11 +25,11 @@ ackermann_steering_controller:
     rear_wheels_names: [rear_right_wheel_joint, rear_left_wheel_joint]
     front_wheels_names: [steer_right_joint, steer_left_joint]
 
-    wheelbase: 0.650
-    front_wheel_track: 0.605
-    rear_wheel_track: 0.605
-    front_wheels_radius: 0.330
-    rear_wheels_radius: 0.330
+    wheelbase: 2.63
+    front_wheel_track: 1.225
+    rear_wheel_track: 1.225
+    front_wheels_radius: 0.5715
+    rear_wheels_radius: 0.5715
 
     # # Odometry
     # odom_frame_id: odom
@@ -53,8 +53,8 @@ ackermann_steering_controller:
       # min_jerk: 0.0
       # max_jerk: 1000.0
     steering:
-      min_position: -1.57
-      max_position: 1.57
+      min_position: -0.57
+      max_position: 0.57
       # min_velocity: 0.0
       max_velocity: 1.0
       # min_acceleration: 0.0
