@@ -18,7 +18,7 @@ install(
   DESTINATION share/${PROJECT_NAME})
 
 install(PROGRAMS
-  ${PROJECT_NAME}/simple_controller.py
+  ${PROJECT_NAME}/ackermann_controller.py
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

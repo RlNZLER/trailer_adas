@@ -25,16 +25,16 @@ def generate_launch_description():
         ],
     )
 
-    simple_controller_node = Node(
+    ackermann_controller_node = Node(
         package='trailer_controller',
-        executable='simple_controller.py',
-        name='simple_controller',
+        executable='ackermann_controller.py',
+        name='ackermann_controller',
         output='screen',
     )
     
     return LaunchDescription([
         joint_state_broadcaster_spawner,
         ackermann_steering_controller_spawner,
-        simple_controller_node
+        ackermann_controller_node
 
     ])

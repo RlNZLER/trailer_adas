@@ -4,10 +4,10 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import TwistStamped
 
-class SimpleController(Node):
+class AckermannController(Node):
     
     def __init__(self):
-        super().__init__('simple_controller')
+        super().__init__('ackermann_controller')
         
         self.declare_parameter('wheel_radius', 0.5715)
         self.declare_parameter('wheel_separation', 1.225)
@@ -31,15 +31,15 @@ class SimpleController(Node):
         ackermann_cmd = TwistStamped()
         ackermann_cmd.header.stamp = self.get_clock().now().to_msg()  # Add timestamp
         ackermann_cmd.twist.linear.x = msg.twist.linear.x
-        ackermann_cmd.twist.angular.z = msg.twist.angular.z
+        ackermann_cmd.twist.angular.z = -msg.twist.angular.z
         self.ackermann_cmd_pub_.publish(ackermann_cmd)
 
 
 def main(args=None):
     rclpy.init(args=args)
-    simple_controller = SimpleController()
-    rclpy.spin(simple_controller)
-    simple_controller.destroy_node()
+    ackermann_controller = AckermannController()
+    rclpy.spin(ackermann_controller)
+    ackermann_controller.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

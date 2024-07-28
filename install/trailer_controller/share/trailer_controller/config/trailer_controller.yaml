@@ -6,12 +6,6 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-    simple_velocity_controller:
-      type: velocity_controllers/JointGroupVelocityController
-
-    steering_position_controller:
-      type: position_controllers/JointGroupPositionController
-
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
 
@@ -120,8 +114,8 @@ ackermann_steering_controller:
       # min_jerk: 0.0
       # max_jerk: 1000.0
     steering:
-      min_position: -0.5
-      max_position: 0.5
+      min_position: -0.6
+      max_position: 0.6
       # min_velocity: 0.0
       max_velocity: 1.0
       # min_acceleration: 0.0
