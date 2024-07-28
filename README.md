@@ -64,3 +64,7 @@ def generate_launch_description():
         ),
     ])
 ```
+
+Launch commands:
+ros2 launch trailer_description gazebo.launch.py 
+ros2 launch trailer_controller controller.launch.py 

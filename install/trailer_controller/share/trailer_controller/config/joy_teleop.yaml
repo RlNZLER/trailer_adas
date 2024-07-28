@@ -3,7 +3,7 @@ joy_teleop:
     move:
       type: topic
       interface_type: geometry_msgs/msg/TwistStamped
-      topic_name: /trailer_controller/cmd_vel  # Simple controller is listening to this topic.
+      topic_name: trailer_controller/cmd_vel  # Simple controller is listening to this topic.
 
       deadman_buttons: [5]
 
