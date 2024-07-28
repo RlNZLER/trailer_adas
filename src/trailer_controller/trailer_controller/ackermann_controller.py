@@ -18,7 +18,7 @@ class AckermannController(Node):
         self.get_logger().info("Using wheel radius: " + str(self.wheel_radius_))
         self.get_logger().info("Using wheel separation: " + str(self.wheel_separation_))
         
-        # Change the publisher to publish to the Ackermann controller reference topic
+        # Publish to the Ackermann controller reference topic
         self.ackermann_cmd_pub_ = self.create_publisher(TwistStamped, "/ackermann_steering_controller/reference", 10)
         
         # Subscribe to the joystick cmd_vel topic
@@ -30,8 +30,11 @@ class AckermannController(Node):
         
         ackermann_cmd = TwistStamped()
         ackermann_cmd.header.stamp = self.get_clock().now().to_msg()  # Add timestamp
+        
+        # Adjust the angular velocity based on the direction of linear velocity
         ackermann_cmd.twist.linear.x = msg.twist.linear.x
-        ackermann_cmd.twist.angular.z = -msg.twist.angular.z
+        ackermann_cmd.twist.angular.z = msg.twist.angular.z if msg.twist.linear.x <= 0 else -msg.twist.angular.z
+        
         self.ackermann_cmd_pub_.publish(ackermann_cmd)
 
 
