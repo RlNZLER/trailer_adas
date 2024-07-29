@@ -6,7 +6,7 @@ from geometry_msgs.msg import TransformStamped
 from trailer_msgs.srv import GetTransform
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
-
+from tf_transformations import quaternion_from_euler, quaternion_multiply, quaternion_inverse
 
 class SimpleTfKinematics(Node):
     
@@ -21,6 +21,9 @@ class SimpleTfKinematics(Node):
         
         self.x_increment_ = 0.05
         self.last_x_ = 0.0
+        self.rotations_counter_ = 0
+        self.last_orientation_ = quaternion_from_euler(0.0, 0.0, 0.0)
+        self.orientation_increment_ = quaternion_from_euler(0.0, 0.0, 0.05)
         
         self.tf_buffer_ = Buffer()
         self.tf_listener_ = TransformListener(self.tf_buffer_, self)
@@ -56,14 +59,22 @@ class SimpleTfKinematics(Node):
         self.dynamic_transform_stamped_.transform.translation.y = 0.0
         self.dynamic_transform_stamped_.transform.translation.z = 0.0
         
-        self.dynamic_transform_stamped_.transform.rotation.x = 0.0
-        self.dynamic_transform_stamped_.transform.rotation.y = 0.0
-        self.dynamic_transform_stamped_.transform.rotation.z = 0.0
-        self.dynamic_transform_stamped_.transform.rotation.w = 1.0
+        q = quaternion_multiply(self.last_orientation_, self.orientation_increment_)
+        
+        self.dynamic_transform_stamped_.transform.rotation.x = q[0]
+        self.dynamic_transform_stamped_.transform.rotation.y = q[1]
+        self.dynamic_transform_stamped_.transform.rotation.z = q[2]
+        self.dynamic_transform_stamped_.transform.rotation.w = q[3]
         
         self.dynameic_tf_broadcaster.sendTransform(self.dynamic_transform_stamped_)
         
         self.last_x_ = self.dynamic_transform_stamped_.transform.translation.x
+        self.rotations_counter_ += 1
+        self.last_orientation_ = q
+        
+        if self.rotations_counter_ >= 100:
+            self.orientation_increment_ = quaternion_inverse(self.orientation_increment_)
+            self.rotations_counter_ = 0
         
     def get_transform_callback(self, request, response):
         self.get_logger().info('Requested transform between %s to %s' % (request.frame_id, request.child_frame_id))
