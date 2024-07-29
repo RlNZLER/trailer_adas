@@ -21,6 +21,10 @@ install(PROGRAMS
   ${PROJECT_NAME}/ackermann_controller.py
   DESTINATION lib/${PROJECT_NAME})
 
+install(PROGRAMS
+${PROJECT_NAME}/teleop_controller.py
+DESTINATION lib/${PROJECT_NAME})
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)
