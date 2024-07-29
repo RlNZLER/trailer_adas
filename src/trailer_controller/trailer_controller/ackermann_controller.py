@@ -29,7 +29,7 @@ class SimpleController(Node):
         self.current_speed = 0.0
         self.max_speed = 15.0
         self.speed_increment = 0.5
-        self.speed_decrement = 3.0
+        self.speed_decrement = 5.0
         self.angular_z = 0.0
         self.direction = 1.0  # 1 for forward, -1 for reverse
         self.parked = False  # True if the car is in park mode

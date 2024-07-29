@@ -105,7 +105,7 @@ ackermann_steering_controller:
     # Rate Limiting
     traction: # All values should be positive
       min_velocity: 0.0
-      max_velocity: 3.0
+      max_velocity: 15.0
       min_acceleration: 0.0
       max_acceleration: 5.0
       min_deceleration: 0.0
