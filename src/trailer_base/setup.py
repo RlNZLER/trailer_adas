@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'simple_tf_kinematics = trailer_base.simple_tf_kinematics:main',
+            "simple_service_server = trailer_base.simple_service_server:main",
         ],
     },
 )
