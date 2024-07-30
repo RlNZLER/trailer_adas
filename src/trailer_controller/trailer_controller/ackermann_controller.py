@@ -4,6 +4,9 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Joy
 from geometry_msgs.msg import TwistStamped
+from sensor_msgs.msg import JointState
+from rclpy.time import Time
+from rclpy.constants import S_TO_NS
 
 class SimpleController(Node):
     
@@ -16,6 +19,10 @@ class SimpleController(Node):
         self.wheel_radius_ = self.get_parameter('wheel_radius').get_parameter_value().double_value
         self.wheel_separation_ = self.get_parameter('wheel_separation').get_parameter_value().double_value
         
+        self.left_wheel_prev_pos_ = 0.0
+        self.right_wheel_prev_pos_ = 0.0
+        self.prev_time_ = self.get_clock().now()
+        
         self.get_logger().info("Using wheel radius: " + str(self.wheel_radius_))
         self.get_logger().info("Using wheel separation: " + str(self.wheel_separation_))
         
@@ -24,6 +31,9 @@ class SimpleController(Node):
         
         # Subscriber to joystick input
         self.joy_sub_ = self.create_subscription(Joy, "joy", self.joy_callback, 10)
+        
+        # Subscriber to joint states
+        self.joint_sub_ = self.create_subscription(JointState, "joint_states", self.joint_callback, 10)
         
         # Initialize speed variables
         self.current_speed = 0.0
@@ -69,6 +79,24 @@ class SimpleController(Node):
         ackermann_cmd.twist.linear.x = float(self.current_speed * self.direction) if not self.parked else 0.0
         ackermann_cmd.twist.angular.z = -float(self.angular_z) if self.direction == 1 else float(self.angular_z)
         self.ackermann_cmd_pub_.publish(ackermann_cmd)
+        
+    def joint_callback(self, msg):
+        dp_left = msg.position[1] - self.left_wheel_prev_pos_
+        dp_right = msg.position[0] - self.right_wheel_prev_pos_
+        dt = Time.from_msg(msg.header.stamp) - self.prev_time_
+        
+        self.left_wheel_prev_pos_ = msg.position[1]
+        self.right_wheel_prev_pos_ = msg.position[0]
+        self.prev_time_ = Time.from_msg(msg.header.stamp)
+        
+        fi_left = dp_left / (dt.nanoseconds / S_TO_NS)
+        fi_right = dp_right / (dt.nanoseconds / S_TO_NS)
+        
+        linear = self.wheel_radius_ * (fi_right + fi_left) / 2
+        angular = self.wheel_radius_ * (fi_right - fi_left) / self.wheel_separation_
+        
+        self.get_logger().info(f"Linear velocity: {linear}, Angular velocity: {angular}")
+        
         
 def main(args=None):
     rclpy.init(args=args)
