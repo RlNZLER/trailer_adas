@@ -7,6 +7,8 @@ from geometry_msgs.msg import TwistStamped
 from sensor_msgs.msg import JointState
 from rclpy.time import Time
 from rclpy.constants import S_TO_NS
+from math import cos, sin
+
 
 class SimpleController(Node):
     
@@ -22,6 +24,11 @@ class SimpleController(Node):
         self.left_wheel_prev_pos_ = 0.0
         self.right_wheel_prev_pos_ = 0.0
         self.prev_time_ = self.get_clock().now()
+        
+        self.x_ = 0.0
+        self.y_ = 0.0
+        self.theta_ = 0.0
+        
         
         self.get_logger().info("Using wheel radius: " + str(self.wheel_radius_))
         self.get_logger().info("Using wheel separation: " + str(self.wheel_separation_))
@@ -105,9 +112,17 @@ class SimpleController(Node):
         fi_right = dp_right / (dt.nanoseconds / S_TO_NS)
         
         linear = self.wheel_radius_ * (fi_right + fi_left) / 2
-        angular = self.wheel_radius_ * (fi_right - fi_left) / self.wheel_separation_
+        angular = ( self.wheel_radius_ * (fi_right - fi_left) ) / self.wheel_separation_
+        
+        d_s = (self.wheel_radius_ * dp_right + self.wheel_radius_ * dp_left ) / 2
+        d_theta = (self.wheel_radius_ * dp_right - self.wheel_radius_ * dp_left) / self.wheel_separation_
+        
+        self.x_ += d_s * cos(self.theta_)
+        self.y_ += d_s * sin(self.theta_)
+        self.theta_ += d_theta
         
         self.get_logger().info(f"Linear velocity: {linear}, Angular velocity: {angular}")
+        self.get_logger().info(f"Position: ({self.x_}, {self.y_}), Orientation: {self.theta_}")
         
         
 def main(args=None):
