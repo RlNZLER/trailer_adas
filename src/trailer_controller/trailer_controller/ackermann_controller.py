@@ -7,7 +7,9 @@ from geometry_msgs.msg import TwistStamped
 from sensor_msgs.msg import JointState
 from rclpy.time import Time
 from rclpy.constants import S_TO_NS
+from nav_msgs.msg import Odometry
 from math import cos, sin
+from tf_transformations import quaternion_from_euler
 
 
 class SimpleController(Node):
@@ -36,11 +38,22 @@ class SimpleController(Node):
         # Publisher to Ackermann steering controller reference topic
         self.ackermann_cmd_pub_ = self.create_publisher(TwistStamped, "/ackermann_steering_controller/reference", 10)
         
+        # Publisher to odometry topic
+        self.odom_pub_ = self.create_publisher(Odometry, "trailer_controller/odom", 10)
+        
         # Subscriber to joystick input
         self.joy_sub_ = self.create_subscription(Joy, "joy", self.joy_callback, 10)
         
         # Subscriber to joint states
         self.joint_sub_ = self.create_subscription(JointState, "joint_states", self.joint_callback, 10)
+        
+        self.odom_msg_ = Odometry()
+        self.odom_msg_.header.frame_id = "odom"
+        self.odom_msg_.child_frame_id = "base_footprint"
+        self.odom_msg_.pose.pose.orientation.x = 0.0
+        self.odom_msg_.pose.pose.orientation.y = 0.0
+        self.odom_msg_.pose.pose.orientation.z = 0.0
+        self.odom_msg_.pose.pose.orientation.w = 1.0
         
         # Initialize speed variables
         self.current_speed = 0.0
@@ -121,8 +134,21 @@ class SimpleController(Node):
         self.y_ += d_s * sin(self.theta_)
         self.theta_ += d_theta
         
-        self.get_logger().info(f"Linear velocity: {linear}, Angular velocity: {angular}")
-        self.get_logger().info(f"Position: ({self.x_}, {self.y_}), Orientation: {self.theta_}")
+        q = quaternion_from_euler(0.0, 0.0, self.theta_)
+        self.odom_msg_.pose.pose.orientation.x = q[0]
+        self.odom_msg_.pose.pose.orientation.y = q[1]
+        self.odom_msg_.pose.pose.orientation.z = q[2]
+        self.odom_msg_.pose.pose.orientation.w = q[3]
+        self.odom_msg_.header.stamp = self.get_clock().now().to_msg()
+        self.odom_msg_.pose.pose.position.x = self.x_
+        self.odom_msg_.pose.pose.position.y = self.y_
+        self.odom_msg_.twist.twist.linear.x = linear
+        self.odom_msg_.twist.twist.angular.z = angular
+        
+        self.odom_pub_.publish(self.odom_msg_)
+        
+        # self.get_logger().info(f"Linear velocity: {linear}, Angular velocity: {angular}")
+        # self.get_logger().info(f"Position: ({self.x_}, {self.y_}), Orientation: {self.theta_}")
         
         
 def main(args=None):
