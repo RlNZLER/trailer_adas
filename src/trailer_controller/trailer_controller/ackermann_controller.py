@@ -39,7 +39,7 @@ class SimpleController(Node):
         self.current_speed = 0.0
         self.max_speed = 15.0
         self.speed_increment = 0.5
-        self.speed_decrement = 5.0
+        self.speed_decrement = 1.0
         self.angular_z = 0.0
         self.direction = 1.0  # 1 for forward, -1 for reverse
         self.parked = False  # True if the car is in park mode
@@ -81,13 +81,25 @@ class SimpleController(Node):
         self.ackermann_cmd_pub_.publish(ackermann_cmd)
         
     def joint_callback(self, msg):
-        dp_left = msg.position[1] - self.left_wheel_prev_pos_
-        dp_right = msg.position[0] - self.right_wheel_prev_pos_
+        # Using the correct joint names based on the actual JointState message
+        try:
+            left_wheel_index = msg.name.index('rear_left_wheel_joint')
+            right_wheel_index = msg.name.index('rear_right_wheel_joint')
+        except ValueError:
+            self.get_logger().error("Left or right wheel joint not found in JointState message")
+            return
+        
+        dp_left = msg.position[left_wheel_index] - self.left_wheel_prev_pos_
+        dp_right = msg.position[right_wheel_index] - self.right_wheel_prev_pos_
         dt = Time.from_msg(msg.header.stamp) - self.prev_time_
         
-        self.left_wheel_prev_pos_ = msg.position[1]
-        self.right_wheel_prev_pos_ = msg.position[0]
+        self.left_wheel_prev_pos_ = msg.position[left_wheel_index]
+        self.right_wheel_prev_pos_ = msg.position[right_wheel_index]
         self.prev_time_ = Time.from_msg(msg.header.stamp)
+        
+        if dt.nanoseconds == 0:
+            self.get_logger().error("Delta time is zero, skipping calculation")
+            return
         
         fi_left = dp_left / (dt.nanoseconds / S_TO_NS)
         fi_right = dp_right / (dt.nanoseconds / S_TO_NS)
