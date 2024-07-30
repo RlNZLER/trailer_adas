@@ -4,28 +4,25 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Joy
 from geometry_msgs.msg import TwistStamped, TransformStamped
-from std_msgs.msg import Float64MultiArray
 from sensor_msgs.msg import JointState
 from rclpy.time import Time
 from rclpy.constants import S_TO_NS
 from nav_msgs.msg import Odometry
-from math import cos, sin, atan2
+from math import cos, sin
 from tf_transformations import quaternion_from_euler
 from tf2_ros import TransformBroadcaster
-import numpy as np
 
-class AckermannController(Node):
+
+class SimpleController(Node):
     
     def __init__(self):
-        super().__init__('ackermann_controller')
+        super().__init__('simple_controller')
         
         self.declare_parameter('wheel_radius', 0.5715)
         self.declare_parameter('wheel_separation', 1.225)
-        self.declare_parameter('wheel_base', 2.63)  # Distance between front and rear axles
         
         self.wheel_radius_ = self.get_parameter('wheel_radius').get_parameter_value().double_value
         self.wheel_separation_ = self.get_parameter('wheel_separation').get_parameter_value().double_value
-        self.wheel_base_ = self.get_parameter('wheel_base').get_parameter_value().double_value
         
         self.left_wheel_prev_pos_ = 0.0
         self.right_wheel_prev_pos_ = 0.0
@@ -35,13 +32,12 @@ class AckermannController(Node):
         self.y_ = 0.0
         self.theta_ = 0.0
         
+        
         self.get_logger().info("Using wheel radius: " + str(self.wheel_radius_))
         self.get_logger().info("Using wheel separation: " + str(self.wheel_separation_))
-        self.get_logger().info("Using wheel base: " + str(self.wheel_base_))
         
-        self.wheel_cmd_pub_ = self.create_publisher(Float64MultiArray, "simple_velocity_controller/commands", 10)
-        self.steer_cmd_pub_ = self.create_publisher(Float64MultiArray, "steering_position_controller/commands", 10)
-        self.status_pub_ = self.create_publisher(Float64MultiArray, "vehicle_status", 10)
+        # Publisher to Ackermann steering controller reference topic
+        self.ackermann_cmd_pub_ = self.create_publisher(TwistStamped, "/ackermann_steering_controller/reference", 10)
         
         # Publisher to odometry topic
         self.odom_pub_ = self.create_publisher(Odometry, "trailer_controller/odom", 10)
@@ -104,63 +100,13 @@ class AckermannController(Node):
         # Axis 0 for steering (left/right)
         self.angular_z = msg.axes[0] * 0.5  
 
-        # Publish wheel and steering commands based on joystick input
-        self.publish_wheel_and_steering_commands()
-
-    def publish_wheel_and_steering_commands(self):
-        linear_velocity = float(self.current_speed * self.direction) if not self.parked else 0.0
-        angular_velocity = -float(self.angular_z) if self.direction == 1 else float(self.angular_z)
+        # Create and publish TwistStamped message
+        ackermann_cmd = TwistStamped()
+        ackermann_cmd.header.stamp = self.get_clock().now().to_msg()
+        ackermann_cmd.twist.linear.x = float(self.current_speed * self.direction) if not self.parked else 0.0
+        ackermann_cmd.twist.angular.z = -float(self.angular_z) if self.direction == 1 else float(self.angular_z)
+        self.ackermann_cmd_pub_.publish(ackermann_cmd)
         
-        if angular_velocity != 0:
-            turning_radius = linear_velocity / angular_velocity
-            if angular_velocity > 0:  # Turning left
-                left_wheel_angle = atan2(self.wheel_base_, turning_radius - (self.wheel_separation_ / 2))
-                right_wheel_angle = atan2(self.wheel_base_, turning_radius + (self.wheel_separation_ / 2))
-                
-                R_inner = turning_radius - (self.wheel_separation_ / 2)
-                R_outer = turning_radius + (self.wheel_separation_ / 2)
-                
-                V_rear_left = angular_velocity * R_inner
-                V_rear_right = angular_velocity * R_outer
-                
-            else:  # Turning right
-                left_wheel_angle = atan2(self.wheel_base_, turning_radius + (self.wheel_separation_ / 2))
-                right_wheel_angle = atan2(self.wheel_base_, turning_radius - (self.wheel_separation_ / 2))
-                
-                R_inner = turning_radius + (self.wheel_separation_ / 2)
-                R_outer = turning_radius - (self.wheel_separation_ / 2)
-                
-                V_rear_right = angular_velocity * R_inner
-                V_rear_left = angular_velocity * R_outer
-
-        else:
-            left_wheel_angle = 0.0
-            right_wheel_angle = 0.0
-            V_rear_left = V_rear_right = linear_velocity
-
-        wheel_speed_msg = Float64MultiArray()
-        wheel_speed_msg.data = [V_rear_left / self.wheel_radius_, V_rear_right / self.wheel_radius_]
-        self.wheel_cmd_pub_.publish(wheel_speed_msg)
-
-        steer_cmd_msg = Float64MultiArray()
-        steer_cmd_msg.data = [left_wheel_angle, right_wheel_angle]
-        self.steer_cmd_pub_.publish(steer_cmd_msg)
-        
-        steering_angle = (left_wheel_angle + right_wheel_angle) / 2 # Average steering angle
-        
-        # Publish the vehicle status
-        vehicle_status_msg = Float64MultiArray()
-        vehicle_status_msg.data = [
-            linear_velocity,
-            angular_velocity,
-            steering_angle,  
-            left_wheel_angle,
-            right_wheel_angle,
-            V_rear_left,
-            V_rear_right
-        ]
-        self.status_pub_.publish(vehicle_status_msg)
-
     def joint_callback(self, msg):
         # Using the correct joint names based on the actual JointState message
         try:
@@ -223,9 +169,9 @@ class AckermannController(Node):
         
 def main(args=None):
     rclpy.init(args=args)
-    ackermann_controller = AckermannController()
-    rclpy.spin(ackermann_controller)
-    ackermann_controller.destroy_node()
+    simple_controller = SimpleController()
+    rclpy.spin(simple_controller)
+    simple_controller.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
