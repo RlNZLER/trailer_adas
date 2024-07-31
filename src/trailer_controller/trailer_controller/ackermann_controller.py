@@ -65,64 +65,25 @@ class AckermannController(Node):
         self.transform_stamped_.header.frame_id = "odom"
         self.transform_stamped_.child_frame_id = "base_footprint"
         
-        
-        # Initialize speed variables
-        self.current_speed = 0.0
-        self.max_speed = 15.0
-        self.speed_increment = 0.5
-        self.speed_decrement = 1.0
-        self.angular_z = 0.0
-        self.direction = 1.0  # 1 for forward, -1 for reverse
-        self.parked = False  # True if the car is in park mode
-        self.previous_park_button_state = False  # To track the previous state of the park button
-
     def joy_callback(self, msg):
-        # Button 5 for accelerating
-        if msg.buttons[5] and not self.parked:  
-            self.current_speed += self.speed_increment
-            if self.current_speed > self.max_speed:
-                self.current_speed = self.max_speed
+        linear_velocity = msg.axes[4] * 10
+        angular_velocity = msg.axes[0] * 2.243782312
 
-        # Button 4 for braking
-        if msg.buttons[4] and not self.parked:  
-            self.current_speed -= self.speed_decrement
-            if self.current_speed < 0:
-                self.current_speed = 0
+        self.get_logger().info(f"Received linear_velocity: {linear_velocity}, angular_velocity: {angular_velocity}")
 
-        # Button 1 for switching direction (forward/reverse)
-        if msg.buttons[1]:  
-            self.direction *= -1
-            self.get_logger().info(f"Direction switched to {'forward' if self.direction == 1 else 'reverse'}")
-
-        # Button 2 for parking - toggle behavior
-        if msg.buttons[2] and not self.previous_park_button_state:  
-            self.parked = not self.parked
-            self.current_speed = 0.0 if self.parked else self.current_speed
-            self.get_logger().info(f"Car is {'parked' if self.parked else 'unparked'}")
-        self.previous_park_button_state = msg.buttons[2]
-
-        # Axis 0 for steering (left/right)
-        self.angular_z = msg.axes[0] * 0.5  
-
-        # Publish wheel and steering commands based on joystick input
-        self.publish_wheel_and_steering_commands()
-
-    def publish_wheel_and_steering_commands(self):
-        linear_velocity = float(self.current_speed * self.direction) if not self.parked else 0.0
-        angular_velocity = -float(self.angular_z) if self.direction == 1 else float(self.angular_z)
-        
         if angular_velocity != 0:
             turning_radius = linear_velocity / angular_velocity
+            self.get_logger().info(f"Turning radius: {turning_radius}")
+
             if angular_velocity > 0:  # Turning left
-                left_wheel_angle = atan2(self.wheel_base_, turning_radius - (self.wheel_separation_ / 2))
-                right_wheel_angle = atan2(self.wheel_base_, turning_radius + (self.wheel_separation_ / 2))
+                left_wheel_angle = -atan2(self.wheel_base_, turning_radius - (self.wheel_separation_ / 2))
+                right_wheel_angle = -atan2(self.wheel_base_, turning_radius + (self.wheel_separation_ / 2))
                 
                 R_inner = turning_radius - (self.wheel_separation_ / 2)
                 R_outer = turning_radius + (self.wheel_separation_ / 2)
                 
                 V_rear_left = angular_velocity * R_inner
                 V_rear_right = angular_velocity * R_outer
-                
             else:  # Turning right
                 left_wheel_angle = atan2(self.wheel_base_, turning_radius + (self.wheel_separation_ / 2))
                 right_wheel_angle = atan2(self.wheel_base_, turning_radius - (self.wheel_separation_ / 2))
@@ -132,11 +93,13 @@ class AckermannController(Node):
                 
                 V_rear_right = angular_velocity * R_inner
                 V_rear_left = angular_velocity * R_outer
-
         else:
             left_wheel_angle = 0.0
             right_wheel_angle = 0.0
             V_rear_left = V_rear_right = linear_velocity
+
+        self.get_logger().info(f"Left wheel angle: {left_wheel_angle}, Right wheel angle: {right_wheel_angle}")
+        self.get_logger().info(f"V_rear_left: {V_rear_left}, V_rear_right: {V_rear_right}")
 
         wheel_speed_msg = Float64MultiArray()
         wheel_speed_msg.data = [V_rear_left / self.wheel_radius_, V_rear_right / self.wheel_radius_]
@@ -160,6 +123,7 @@ class AckermannController(Node):
             V_rear_right
         ]
         self.status_pub_.publish(vehicle_status_msg)
+
 
     def joint_callback(self, msg):
         # Using the correct joint names based on the actual JointState message

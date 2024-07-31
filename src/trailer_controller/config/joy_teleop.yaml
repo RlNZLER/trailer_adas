@@ -5,37 +5,14 @@ joy_teleop:
       interface_type: geometry_msgs/msg/TwistStamped
       topic_name: trailer_controller/cmd_vel
 
-      # Define buttons
-      deadman_buttons: [5, 4, 1, 2]
+      deadman_buttons: 5
 
-      # Axis mappings for joystick control
       axis_mappings:
-        # Left stick vertical for linear x (forward/reverse)
         twist-linear-x: 
           axis: 1
           scale: 1.0
           offset: 0.0
-        # Left stick horizontal for angular z (steering)
         twist-angular-z:
           axis: 0
           scale: 0.5
           offset: 0.0
-
-      # Button mappings for actions
-      button_mappings:
-        # Forward movement (accelerator)
-        accelerate:
-          button: 5
-          scale: 1.0
-        # Brake
-        brake:
-          button: 4
-          scale: -1.0
-        # Switch direction (forward/reverse)
-        switch_direction:
-          button: 1
-          scale: 1.0
-        # Park
-        park:
-          button: 2
-          scale: 1.0

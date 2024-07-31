@@ -15,15 +15,35 @@ def generate_launch_description():
         ],
     )
     
-    ackermann_steering_controller_spawner  = Node(
+    simple_velocity_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
         arguments=[
-            "ackermann_steering_controller",
+            "simple_velocity_controller",
             "--controller-manager",
             "/controller_manager",
         ],
     )
+    
+    steering_position_controller_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "steering_position_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+    
+    # ackermann_steering_controller_spawner  = Node(
+    #     package='controller_manager',
+    #     executable='spawner',
+    #     arguments=[
+    #         "ackermann_steering_controller",
+    #         "--controller-manager",
+    #         "/controller_manager",
+    #     ],
+    # )
 
     ackermann_controller_node = Node(
         package='trailer_controller',
@@ -34,7 +54,8 @@ def generate_launch_description():
     
     return LaunchDescription([
         joint_state_broadcaster_spawner,
-        ackermann_steering_controller_spawner,
+        simple_velocity_controller_spawner,
+        steering_position_controller_spawner,
         ackermann_controller_node
 
     ])
