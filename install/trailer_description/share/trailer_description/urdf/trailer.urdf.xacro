@@ -562,4 +562,32 @@
       effort="100"
       velocity="31.4" />
   </joint>
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0.0 0 0" rpy="0 0 0"/>
+      <inertia
+          ixx="1e-7" ixy="0" ixz="0"
+          iyy="1e-7" iyz="0"
+          izz="1e-7"
+      />
+  </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+  </joint>
 </robot>
