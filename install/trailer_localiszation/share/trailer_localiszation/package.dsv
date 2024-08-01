@@ -1,8 +1,0 @@
-source;share/trailer_localiszation/hook/cmake_prefix_path.ps1
-source;share/trailer_localiszation/hook/cmake_prefix_path.dsv
-source;share/trailer_localiszation/hook/cmake_prefix_path.sh
-source;share/trailer_localiszation/local_setup.bash
-source;share/trailer_localiszation/local_setup.dsv
-source;share/trailer_localiszation/local_setup.ps1
-source;share/trailer_localiszation/local_setup.sh
-source;share/trailer_localiszation/local_setup.zsh
