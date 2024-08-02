@@ -66,7 +66,17 @@ class AckermannController(Node):
         self.transform_stamped_.child_frame_id = "base_footprint"
         
     def joy_callback(self, msg):
-        linear_velocity = msg.axes[4] * 10
+        # Initialize a variable to determine if the wireless joystick is active
+        wireless_joystick_active = False
+        if msg.axes[4] == 1:
+            wireless_joystick_active = True
+        if wireless_joystick_active:
+            # Use key 3 for wireless joystick
+            linear_velocity = msg.axes[3] * 10
+        else:
+            # Use key 4 for wired joystick
+            linear_velocity = msg.axes[4] * 10
+
         angular_velocity = msg.axes[0] * 2.243782312
 
         self.get_logger().info(f"Received linear_velocity: {linear_velocity}, angular_velocity: {angular_velocity}")
