@@ -590,4 +590,60 @@
     <parent link="base_link"/>
     <child link="imu_link"/>
   </joint>
+
+<!-- Ultrasonic Sensors -->
+<xacro:macro name="ultrasonic_sensor" params="name x y z">
+  <link name="${name}">
+    <visual>
+      <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.015"/>
+      </geometry>
+      <material name="sensor_mat">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="${name}_joint" type="fixed">
+    <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="${name}"/>
+  </joint>
+</xacro:macro>
+
+<!-- Add Ultrasonic Sensors -->
+<xacro:ultrasonic_sensor name="u1_link" x="-2.16" y="0.6125" z="0.05"/>
+<xacro:ultrasonic_sensor name="u2_link" x="-2.16" y="0.26" z="0.05"/>
+<xacro:ultrasonic_sensor name="u3_link" x="-2.16" y="-0.26" z="0.05"/>
+<xacro:ultrasonic_sensor name="u4_link" x="-2.16" y="-0.6125" z="0.05"/>
+
+<!-- Depth Sense Camera -->
+<link name="depth_camera_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.1"/>
+    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="-2.16 0 0.41495" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.02 0.06 0.015"/>
+    </geometry>
+    <material name="depth_camera_material">
+      <color rgba="0.5 0.5 0.5 1.0"/>
+    </material>
+  </visual>
+  <collision>
+    <origin xyz="-2.16 0 0.41495" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.02 0.06 0.015"/>
+    </geometry>
+  </collision>
+</link>
+<joint name="depth_camera_joint" type="fixed">
+  <origin xyz="-2.16 0 0.41495" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="depth_camera_link"/>
+</joint>
+
 </robot>
