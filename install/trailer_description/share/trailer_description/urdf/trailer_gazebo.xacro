@@ -318,7 +318,7 @@
 
     <!-- Ultrasonic Sensor u4 -->
     <gazebo reference="u4_Link">
-        <sensor name="sonar" type="gpu_ray">
+        <sensor name="sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
             <always_on>true</always_on>
