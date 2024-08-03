@@ -236,7 +236,7 @@
             </ray>
             <plugin name="u1_range_sensor" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
-                    <remapping>~/out:=range</remapping>
+                    <remapping>~/out:=range/u1</remapping>
                 </ros>
                     <output_type>sensor_msgs/Range</output_type>
                     <frame_name>u1_Link</frame_name>
@@ -272,7 +272,7 @@
             </ray>
             <plugin name="u2_range_sensor" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
-                    <remapping>~/out:=range</remapping>
+                    <remapping>~/out:=range/u2</remapping>
                 </ros>
                     <output_type>sensor_msgs/Range</output_type>
                     <frame_name>u2_Link</frame_name>
@@ -308,7 +308,7 @@
             </ray>
             <plugin name="u3_range_sensor" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
-                    <remapping>~/out:=range</remapping>
+                    <remapping>~/out:=range/u3</remapping>
                 </ros>
                     <output_type>sensor_msgs/Range</output_type>
                     <frame_name>u3_Link</frame_name>
@@ -344,7 +344,7 @@
             </ray>
             <plugin name="u4_range_sensor" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
-                    <remapping>~/out:=range</remapping>
+                    <remapping>~/out:=range/u4</remapping>
                 </ros>
                     <output_type>sensor_msgs/Range</output_type>
                     <frame_name>u4_Link</frame_name>
