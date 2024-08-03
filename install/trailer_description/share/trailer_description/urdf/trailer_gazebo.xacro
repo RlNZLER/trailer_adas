@@ -184,128 +184,36 @@
 
     <!-- Ultrasonic Sensor u1 -->
     <gazebo reference="u1_link">
-        <sensor type="ray" name="ultrasonic_sensor_u1">
-            <pose>-2.16 0.6125 0.05 0 0 0</pose>
+        <sensor name="laser_sensor" type="ray">
+            <pose>0 0 0 0 0 0</pose>
             <visualize>true</visualize>
             <update_rate>10</update_rate>
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>1</samples>
+                        <samples>10</samples>
                         <resolution>1</resolution>
-                        <min_angle>0</min_angle>
-                        <max_angle>0</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </horizontal>
                 </scan>
                 <range>
-                    <min>0.02</min>
-                    <max>4.0</max>
+                    <min>0.10</min>
+                    <max>8.0</max>
                     <resolution>0.01</resolution>
                 </range>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.01</stddev>
+                </noise>
             </ray>
-            <plugin filename="libgazebo_ros_range.so" name="gazebo_ros_ultrasonic_u1">
-                <gaussianNoise>0.01</gaussianNoise>
-                <alwaysOn>true</alwaysOn>
-                <updateRate>10</updateRate>
-                <topicName>sensor/ultrasonic_u1</topicName>
-                <frameName>u1_link</frameName>
-                <radiation>ultrasonic</radiation>
-            </plugin>
-        </sensor>
-    </gazebo>
-
-    <!-- Ultrasonic Sensor u2 -->
-    <gazebo reference="u2_link">
-        <sensor type="ray" name="ultrasonic_sensor_u2">
-            <pose>-2.16 0.260 0.05 0 0 0</pose>
-            <visualize>true</visualize>
-            <update_rate>10</update_rate>
-            <ray>
-                <scan>
-                    <horizontal>
-                        <samples>1</samples>
-                        <resolution>1</resolution>
-                        <min_angle>0</min_angle>
-                        <max_angle>0</max_angle>
-                    </horizontal>
-                </scan>
-                <range>
-                    <min>0.02</min>
-                    <max>4.0</max>
-                    <resolution>0.01</resolution>
-                </range>
-            </ray>
-            <plugin filename="libgazebo_ros_range.so" name="gazebo_ros_ultrasonic_u2">
-                <gaussianNoise>0.01</gaussianNoise>
-                <alwaysOn>true</alwaysOn>
-                <updateRate>10</updateRate>
-                <topicName>sensor/ultrasonic_u2</topicName>
-                <frameName>u2_link</frameName>
-                <radiation>ultrasonic</radiation>
-            </plugin>
-        </sensor>
-    </gazebo>
-
-    <!-- Ultrasonic Sensor u3 -->
-    <gazebo reference="u3_link">
-        <sensor type="ray" name="ultrasonic_sensor_u3">
-            <pose>-2.16 -0.260 0.05 0 0 0</pose>
-            <visualize>true</visualize>
-            <update_rate>10</update_rate>
-            <ray>
-                <scan>
-                    <horizontal>
-                        <samples>1</samples>
-                        <resolution>1</resolution>
-                        <min_angle>0</min_angle>
-                        <max_angle>0</max_angle>
-                    </horizontal>
-                </scan>
-                <range>
-                    <min>0.02</min>
-                    <max>4.0</max>
-                    <resolution>0.01</resolution>
-                </range>
-            </ray>
-            <plugin filename="libgazebo_ros_range.so" name="gazebo_ros_ultrasonic_u3">
-                <gaussianNoise>0.01</gaussianNoise>
-                <alwaysOn>true</alwaysOn>
-                <updateRate>10</updateRate>
-                <topicName>sensor/ultrasonic_u3</topicName>
-                <frameName>u3_link</frameName>
-                <radiation>ultrasonic</radiation>
-            </plugin>
-        </sensor>
-    </gazebo>
-
-    <!-- Ultrasonic Sensor u4 -->
-    <gazebo reference="u4_link">
-        <sensor type="ray" name="ultrasonic_sensor_u4">
-            <pose>-2.16 -0.6125 0.05 0 0 0</pose>
-            <visualize>true</visualize>
-            <update_rate>10</update_rate>
-            <ray>
-                <scan>
-                    <horizontal>
-                        <samples>1</samples>
-                        <resolution>1</resolution>
-                        <min_angle>0</min_angle>
-                        <max_angle>0</max_angle>
-                    </horizontal>
-                </scan>
-                <range>
-                    <min>0.02</min>
-                    <max>4.0</max>
-                    <resolution>0.01</resolution>
-                </range>
-            </ray>
-            <plugin filename="libgazebo_ros_range.so" name="gazebo_ros_ultrasonic_u4">
-                <gaussianNoise>0.01</gaussianNoise>
-                <alwaysOn>true</alwaysOn>
-                <updateRate>10</updateRate>
-                <topicName>sensor/ultrasonic_u4</topicName>
-                <frameName>u4_link</frameName>
-                <radiation>ultrasonic</radiation>
+            <plugin name="u1_range_sensor" filename="libgazebo_ros_ray_sensor.so">
+                <ros>
+                    <remapping>~/out:=range</remapping>
+                </ros>
+                    <topicName>sensor_msgs/Range</topicName>
+                    <frameName>u1_link</frameName>
             </plugin>
         </sensor>
     </gazebo>
@@ -313,36 +221,37 @@
     <!-- Depth Camera Setup -->
     <gazebo reference="depth_camera_link">
         <sensor name="depth_camera" type="depth">
-            <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
-            <always_on>true</always_on>
             <visualize>true</visualize>
             <update_rate>30.0</update_rate>
-            <camera name="depth_camera">
-            <horizontal_fov>1.23918</horizontal_fov>
+            <camera name="camera">
+            <horizontal_fov>1.047198</horizontal_fov>
             <image>
                 <width>640</width>
                 <height>480</height>
                 <format>R8G8B8</format>
             </image>
             <clip>
-                <near>0.02</near>
-                <far>300</far>
+                <near>0.05</near>
+                <far>3</far>
             </clip>
-            </camera>
-
-            <plugin name="gazebo_ros_depth_camera_plugin" filename="libgazebo_ros_openni_kinect.so">
+        </camera>
+            <plugin name="depth_camera_controller" filename="libgazebo_ros_camera.so">
                 <baseline>0.2</baseline>
                 <alwaysOn>true</alwaysOn>
                 <updateRate>0.0</updateRate>
-                <cameraName>depth_camera</cameraName>
-                <imageTopicName>/trailer/color/image_raw</imageTopicName>
-                <cameraInfoTopicName>/trailer/color/camera_info</cameraInfoTopicName>
-                <depthImageTopicName>/trailer/depth/image_raw</depthImageTopicName>
-                <depthImageCameraInfoTopicName>/trailer/depth/camera_info</depthImageCameraInfoTopicName>
-                <pointCloudTopicName>/trailer/depth/points</pointCloudTopicName>
-                <frameName>depth_camera_link</frameName>
+                <frame_name>camera_depth_frame</frame_name>
                 <pointCloudCutoff>0.5</pointCloudCutoff>
                 <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+                <distortionK1>0</distortionK1>
+                <distortionK2>0</distortionK2>
+                <distortionK3>0</distortionK3>
+                <distortionT1>0</distortionT1>
+                <distortionT2>0</distortionT2>
+                <CxPrime>0</CxPrime>
+                <Cx>0</Cx>
+                <Cy>0</Cy>
+                <focalLength>0</focalLength>
+                <hackBaseline>0</hackBaseline>
             </plugin>
         </sensor>
     </gazebo>

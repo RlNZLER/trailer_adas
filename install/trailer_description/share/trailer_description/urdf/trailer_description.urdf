@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  xmlns:xacro="http://www.ros.org/wiki/xacro"
-  name="trailer">
-
-  <xacro:include filename="$(find trailer_description)/urdf/trailer_gazebo.xacro"/>
-  <xacro:include filename="$(find trailer_description)/urdf/trailer_ros2_control.xacro"/>
-
-  <link name="base_footprint"/>  
+  name="trailer_description">
   <link
     name="base_link">
     <inertial>
@@ -47,12 +44,6 @@
       </geometry>
     </collision>
   </link>
-  <joint name="base_joint" type="fixed">
-    <origin xyz="0 0 0.28575" rpy="0 0 0"/>
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
-  </joint>
-
   <link
     name="steer_left">
     <inertial>
@@ -106,10 +97,10 @@
     <axis
       xyz="0 0 -1" />
     <limit
-      lower="-0.6"
-      upper="0.6"
-      effort="50"
-      velocity="1.5" />
+      lower="0"
+      upper="0"
+      effort="100"
+      velocity="31.4" />
   </joint>
   <link
     name="front_left_wheel">
@@ -164,6 +155,8 @@
     <axis
       xyz="0 1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
@@ -218,12 +211,12 @@
     <child
       link="steer_right" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
-      lower="-0.6"
-      upper="0.6"
-      effort="50"
-      velocity="1.5" />
+      lower="0"
+      upper="0"
+      effort="100"
+      velocity="31.4" />
   </joint>
   <link
     name="front_right_wheel">
@@ -278,6 +271,8 @@
     <axis
       xyz="0 1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
@@ -334,6 +329,8 @@
     <axis
       xyz="0 1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
@@ -390,6 +387,8 @@
     <axis
       xyz="0 1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
@@ -504,6 +503,8 @@
     <axis
       xyz="0 -1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
@@ -560,41 +561,11 @@
     <axis
       xyz="0 -1 0" />
     <limit
+      lower="0"
+      upper="0"
       effort="100"
       velocity="31.4" />
   </joint>
-
-  <!-- IMU Sensor -->
-  <link name="imu_link">
-    <inertial>
-      <mass value="0.01"/>
-      <origin xyz="0.0 0 0" rpy="0 0 0"/>
-      <inertia
-          ixx="1e-7" ixy="0" ixz="0"
-          iyy="1e-7" iyz="0"
-          izz="1e-7"
-      />
-  </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.001 0.001 0.001"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.001 0.001 0.001"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="imu_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <parent link="base_link"/>
-    <child link="imu_link"/>
-  </joint>
-
-  <!-- Ultrasonic Sensors -->
   <link
     name="u1_Link">
     <inertial>
@@ -828,7 +799,8 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <box size="0.02 0.06 0.015"/>
+        <mesh
+          filename="package://trailer_description/meshes/depth_camera_link.STL" />
       </geometry>
       <material
         name="">
@@ -841,7 +813,8 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <box size="0.02 0.06 0.015"/>
+        <mesh
+          filename="package://trailer_description/meshes/depth_camera_link.STL" />
       </geometry>
     </collision>
   </link>
