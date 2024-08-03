@@ -11,16 +11,16 @@
     name="base_link">
     <inertial>
       <origin
-        xyz="0.0151794504413044 -2.72871741278684E-16 0.504333281484515"
+        xyz="0.0151794504413042 -2.70446273320019E-16 0.504333281484515"
         rpy="0 0 0" />
       <mass
         value="5623.96238078164" />
       <inertia
         ixx="1505.2735842584"
-        ixy="3.7224720704788E-14"
+        ixy="2.45552732709707E-14"
         ixz="-96.1203292275202"
         iyy="7932.64531285603"
-        iyz="-2.22978883011256E-14"
+        iyz="-2.74532801802233E-14"
         izz="8447.43080900142" />
     </inertial>
     <visual>
@@ -52,6 +52,7 @@
     <parent link="base_footprint"/>
     <child link="base_link"/>
   </joint>
+
   <link
     name="steer_left">
     <inertial>
@@ -162,7 +163,7 @@
       link="front_left_wheel" />
     <axis
       xyz="0 1 0" />
-      <limit
+    <limit
       effort="100"
       velocity="31.4" />
   </joint>
@@ -276,7 +277,7 @@
       link="front_right_wheel" />
     <axis
       xyz="0 1 0" />
-      <limit
+    <limit
       effort="100"
       velocity="31.4" />
   </joint>
@@ -396,16 +397,16 @@
     name="trailer">
     <inertial>
       <origin
-        xyz="-2.06473943000056 -9.59060549514745E-17 0.256889099220807"
+        xyz="-2.06473943000056 -9.65449692159716E-17 0.256889099220807"
         rpy="0 0 0" />
       <mass
         value="2715.11151397176" />
       <inertia
         ixx="634.919956534306"
-        ixy="7.66014195843368E-14"
-        ixz="9.29453456945521"
+        ixy="7.7271657034793E-14"
+        ixz="9.29453456945518"
         iyy="1640.30654615615"
-        iyz="4.53164968888437E-15"
+        iyz="4.81260634396325E-15"
         izz="2004.11171155846" />
     </inertial>
     <visual>
@@ -510,7 +511,7 @@
     name="t_right_wheel">
     <inertial>
       <origin
-        xyz="0 0 1.11022302462516E-16"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
         value="74.1907633489725" />
@@ -562,6 +563,8 @@
       effort="100"
       velocity="31.4" />
   </joint>
+
+  <!-- IMU Sensor -->
   <link name="imu_link">
     <inertial>
       <mass value="0.01"/>
@@ -591,59 +594,268 @@
     <child link="imu_link"/>
   </joint>
 
-<!-- Ultrasonic Sensors -->
-<xacro:macro name="ultrasonic_sensor" params="name x y z">
-  <link name="${name}">
+  <!-- Ultrasonic Sensors -->
+  <link
+    name="u1_Link">
+    <inertial>
+      <origin
+        xyz="-2.22044604925031E-16 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00176714586764422" />
+      <inertia
+        ixx="4.97009775274937E-08"
+        ixy="6.44944990373328E-23"
+        ixz="1.28060738442034E-40"
+        iyy="3.95767043274481E-08"
+        iyz="-9.95682444457783E-55"
+        izz="3.95767043274481E-08" />
+    </inertial>
     <visual>
-      <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
       <geometry>
-        <cylinder length="0.02" radius="0.015"/>
+        <mesh
+          filename="package://trailer_description/meshes/u1_Link.STL" />
       </geometry>
-      <material name="sensor_mat">
-        <color rgba="0.5 0.5 0.5 1"/>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
       </material>
     </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/u1_Link.STL" />
+      </geometry>
+    </collision>
   </link>
-  <joint name="${name}_joint" type="fixed">
-    <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
-    <parent link="base_link"/>
-    <child link="${name}"/>
+  <joint
+    name="u1_joint"
+    type="fixed">
+    <origin
+      xyz="-2.16 0.6125 0.05"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="u1_Link" />
+    <axis
+      xyz="0 0 0" />
   </joint>
-</xacro:macro>
-
-<!-- Add Ultrasonic Sensors -->
-<xacro:ultrasonic_sensor name="u1_link" x="-2.16" y="0.6125" z="0.05"/>
-<xacro:ultrasonic_sensor name="u2_link" x="-2.16" y="0.26" z="0.05"/>
-<xacro:ultrasonic_sensor name="u3_link" x="-2.16" y="-0.26" z="0.05"/>
-<xacro:ultrasonic_sensor name="u4_link" x="-2.16" y="-0.6125" z="0.05"/>
-
-<!-- Depth Sense Camera -->
-<link name="depth_camera_link">
-  <inertial>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <mass value="0.1"/>
-    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
-  </inertial>
-  <visual>
-    <origin xyz="-2.16 0 0.41495" rpy="0 0 0"/>
-    <geometry>
-      <box size="0.02 0.06 0.015"/>
-    </geometry>
-    <material name="depth_camera_material">
-      <color rgba="0.5 0.5 0.5 1.0"/>
-    </material>
-  </visual>
-  <collision>
-    <origin xyz="-2.16 0 0.41495" rpy="0 0 0"/>
-    <geometry>
-      <box size="0.02 0.06 0.015"/>
-    </geometry>
-  </collision>
-</link>
-<joint name="depth_camera_joint" type="fixed">
-  <origin xyz="-2.16 0 0.41495" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="depth_camera_link"/>
-</joint>
-
+  <link
+    name="u2_Link">
+    <inertial>
+      <origin
+        xyz="-4.44089209850063E-16 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00176714586764422" />
+      <inertia
+        ixx="4.97009775274937E-08"
+        ixy="-6.61984950467753E-23"
+        ixz="-6.44944990373324E-23"
+        iyy="3.95767043274481E-08"
+        iyz="1.03497225198971E-37"
+        izz="3.95767043274481E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/u2_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/u2_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="u2_joint"
+    type="fixed">
+    <origin
+      xyz="-2.16 0.26 0.05"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="u2_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="u3_Link">
+    <inertial>
+      <origin
+        xyz="-2.22044604925031E-16 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00176714586764422" />
+      <inertia
+        ixx="4.97009775274937E-08"
+        ixy="-6.61984950467753E-23"
+        ixz="-6.44944990373324E-23"
+        iyy="3.95767043274481E-08"
+        iyz="1.03497225198971E-37"
+        izz="3.95767043274481E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/u3_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/u3_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="u3_joint"
+    type="fixed">
+    <origin
+      xyz="-2.16 -0.26 0.05"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="u3_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="u4_Link">
+    <inertial>
+      <origin
+        xyz="-2.22044604925031E-16 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00176714586764422" />
+      <inertia
+        ixx="4.97009775274937E-08"
+        ixy="6.61984950467755E-23"
+        ixz="2.20581496680827E-24"
+        iyy="3.95767043274481E-08"
+        iyz="-1.10592535436423E-38"
+        izz="3.95767043274481E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/u4_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/u4_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="u4_joint"
+    type="fixed">
+    <origin
+      xyz="-2.16 -0.6125 0.05"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="u4_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="depth_camera_link">
+    <inertial>
+      <origin
+        xyz="0.698189709402004 -5.82219674682042E-17 0.0335520498211091"
+        rpy="0 0 0" />
+      <mass
+        value="8787.20320689569" />
+      <inertia
+        ixx="2433.19483459516"
+        ixy="-2.84228617981465E-13"
+        ixz="-892.315238754295"
+        iyy="50275.0478791783"
+        iyz="2.84212143285523E-14"
+        izz="51203.3625667597" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.02 0.06 0.015"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.02 0.06 0.015"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="depth_camera_joint"
+    type="fixed">
+    <origin
+      xyz="-2.16 0 0.41495"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="depth_camera_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
 </robot>
