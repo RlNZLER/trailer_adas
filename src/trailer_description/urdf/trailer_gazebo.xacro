@@ -158,8 +158,9 @@
         </plugin>
     </gazebo>
 
+    <!-- IMU Sensor -->
     <gazebo reference="imu_link">
-        <sensor type="imu_sensor" name="imu">
+        <sensor type="imu" name="imu_sensor">
             <always_on>true</always_on>
             <update_rate>100</update_rate>
             <visualize>true</visualize>
@@ -205,7 +206,7 @@
                     </z>
                 </linear_acceleration>
             </imu>
-            <plugin filename="libgazebo_ros_imu_sensor.so" name="imu">
+            <plugin name="imu" filename="libgazebo_ros_imu_sensor.so">
                 <ros>
                     <namespace>/trailer</namespace>
                     <remapping>~/out:=imu</remapping>
