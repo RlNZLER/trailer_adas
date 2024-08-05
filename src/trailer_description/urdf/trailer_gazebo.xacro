@@ -106,7 +106,7 @@
         <minDepth>0.001</minDepth>
         <maxVel>0.1</maxVel>
         <fdir1>0 0 1</fdir1>
-        <material>Gazebo/Blue</material>
+        <material>Gazebo/Orange</material>
     </gazebo>
 
     <gazebo reference="t_left_wheel">
@@ -217,6 +217,7 @@
 
     <!-- Ultrasonic Sensor u1 -->
     <gazebo reference="u1_Link">
+        <material>Gazebo/Red</material>
         <sensor name="sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
@@ -229,6 +230,12 @@
                         <min_angle>-0.087</min_angle>
                         <max_angle>0.087</max_angle>
                     </horizontal>
+                    <vertical>
+                        <samples>10</samples>
+                        <resolution>1.0</resolution>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
+                    </vertical>
                 </scan>
                 <range>
                     <min>0.010</min>
@@ -246,6 +253,7 @@
                     <remapping>~/out:=range/u1</remapping>
                 </ros>
                     <output_type>sensor_msgs/Range</output_type>
+                    <radiation_type>ultrasound</radiation_type>
                     <frame_name>u1_Link</frame_name>
             </plugin>
         </sensor>
@@ -253,6 +261,7 @@
 
     <!-- Ultrasonic Sensor u2 -->
     <gazebo reference="u2_Link">
+        <material>Gazebo/Red</material>
         <sensor name="sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
@@ -265,6 +274,12 @@
                         <min_angle>-0.087</min_angle>
                         <max_angle>0.087</max_angle>
                     </horizontal>
+                    <vertical>
+                        <samples>10</samples>
+                        <resolution>1.0</resolution>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
+                    </vertical>
                 </scan>
                 <range>
                     <min>0.010</min>
@@ -282,6 +297,7 @@
                     <remapping>~/out:=range/u2</remapping>
                 </ros>
                     <output_type>sensor_msgs/Range</output_type>
+                    <radiation_type>ultrasound</radiation_type>
                     <frame_name>u2_Link</frame_name>
             </plugin>
         </sensor>
@@ -289,6 +305,7 @@
 
     <!-- Ultrasonic Sensor u3 -->
     <gazebo reference="u3_Link">
+        <material>Gazebo/Red</material>
         <sensor name="sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
@@ -301,6 +318,12 @@
                         <min_angle>-0.087</min_angle>
                         <max_angle>0.087</max_angle>
                     </horizontal>
+                    <vertical>
+                        <samples>10</samples>
+                        <resolution>1.0</resolution>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
+                    </vertical>
                 </scan>
                 <range>
                     <min>0.010</min>
@@ -318,6 +341,7 @@
                     <remapping>~/out:=range/u3</remapping>
                 </ros>
                     <output_type>sensor_msgs/Range</output_type>
+                    <radiation_type>ultrasound</radiation_type>
                     <frame_name>u3_Link</frame_name>
             </plugin>
         </sensor>
@@ -325,6 +349,7 @@
 
     <!-- Ultrasonic Sensor u4 -->
     <gazebo reference="u4_Link">
+        <material>Gazebo/Red</material>
         <sensor name="sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
@@ -337,6 +362,12 @@
                         <min_angle>-0.087</min_angle>
                         <max_angle>0.087</max_angle>
                     </horizontal>
+                    <vertical>
+                        <samples>10</samples>
+                        <resolution>1.0</resolution>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
+                    </vertical>
                 </scan>
                 <range>
                     <min>0.010</min>
@@ -354,6 +385,7 @@
                     <remapping>~/out:=range/u4</remapping>
                 </ros>
                     <output_type>sensor_msgs/Range</output_type>
+                    <radiation_type>ultrasound</radiation_type>
                     <frame_name>u4_Link</frame_name>
             </plugin>
         </sensor>
@@ -361,6 +393,7 @@
 
     <!-- Depth Camera Setup -->
     <gazebo reference="depth_camera_link">
+        <material>Gazebo/Black</material>
         <sensor name="depth_camera" type="depth">
             <visualize>true</visualize>
             <update_rate>30.0</update_rate>
