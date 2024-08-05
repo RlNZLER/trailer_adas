@@ -15,12 +15,13 @@ def generate_launch_description():
     
     model_path = os.path.join(trailer_description, 'models')
     model_path += pathsep + os.path.join(trailer_description_prefix, 'share')
+    default_model_path = os.path.join(trailer_description, 'urdf', 'trailer.urdf.xacro')
     
     env_variable = SetEnvironmentVariable('GAZEBO_MODEL_PATH', model_path)
     
     model_arg = DeclareLaunchArgument(
         name='model',
-        default_value=os.path.join(trailer_description, 'urdf', 'trailer.urdf.xacro'), 
+        default_value=default_model_path, 
         description='Absolute path to robot urdf file'
     )
     
@@ -49,5 +50,5 @@ def generate_launch_description():
         robot_state_publisher_node,
         start_gazebo_server,
         start_gazebo_client,
-        spawn_robot        
+        spawn_robot
     ])

@@ -159,9 +159,10 @@
     </gazebo>
 
     <gazebo reference="imu_link">
-        <sensor type="imu" name="imu">
+        <sensor type="imu_sensor" name="imu">
             <always_on>true</always_on>
             <update_rate>100</update_rate>
+            <visualize>true</visualize>
             <imu>
                 <angular_velocity>
                     <x>
@@ -204,7 +205,13 @@
                     </z>
                 </linear_acceleration>
             </imu>
-            <plugin filename="libgazebo_ros_imu_sensor.so" name="imu"/>
+            <plugin filename="libgazebo_ros_imu_sensor.so" name="imu">
+                <ros>
+                    <namespace>/trailer</namespace>
+                    <remapping>~/out:=imu</remapping>
+                </ros>
+                <initial_orientation_as_reference>false</initial_orientation_as_reference>
+            </plugin>
         </sensor>
     </gazebo>
 
