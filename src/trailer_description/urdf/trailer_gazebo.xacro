@@ -208,7 +208,6 @@
             </imu>
             <plugin name="imu" filename="libgazebo_ros_imu_sensor.so">
                 <ros>
-                    <namespace>/trailer</namespace>
                     <remapping>~/out:=imu</remapping>
                 </ros>
                 <initial_orientation_as_reference>false</initial_orientation_as_reference>
