@@ -131,6 +131,5 @@ def generate_launch_description():
         simple_velocity_controller_spawner,
         steering_position_controller_spawner,
         ackermann_controller_py,
-        noisy_controller_launch,
-
+        noisy_controller_launch
     ])
