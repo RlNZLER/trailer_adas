@@ -9,7 +9,7 @@ def generate_launch_description():
     static_transform_publisher = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['--x', '0', '--y', '0', '--z', '0', '--qx', '0', '--qy', '0', '--qz', '0', '--qw', '1', 
+        arguments=['--x', '0', '--y', '0', '--z', '0.28575', '--qx', '0', '--qy', '0', '--qz', '0', '--qw', '1', 
                     '--frame-id', 'base_footprint_ekf', '--child-frame-id', 'imu_link_ekf'],
     )
     
@@ -21,13 +21,22 @@ def generate_launch_description():
         parameters=[os.path.join(get_package_share_directory('trailer_localization'), 'config', 'ekf.yaml')]
     )
     
-    imu_republisher = Node(
+    imu_republisher_py = Node(
         package='trailer_localization',
         executable='imu_republisher.py',
+    )
+    
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', os.path.join(get_package_share_directory('trailer_localization'), 'rviz', 'trailer.rviz')],
     )
     
     return LaunchDescription([
         static_transform_publisher,
         robot_localization,
-        imu_republisher
+        imu_republisher_py,
+        rviz_node
     ])
