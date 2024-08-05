@@ -43,20 +43,6 @@ def generate_launch_description():
         arguments=['-entity', 'trailer', '-topic', 'robot_description'],
         output='screen'
     )
-    joint_state_publisher_node = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher',
-        arguments=[default_model_path], 
-    )
-        
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        output='screen',
-        arguments=['-d', os.path.join(get_package_share_directory('trailer_description'), 'rviz', 'display.rviz')],
-    )
     
     return LaunchDescription([
         env_variable,
@@ -64,7 +50,5 @@ def generate_launch_description():
         robot_state_publisher_node,
         start_gazebo_server,
         start_gazebo_client,
-        spawn_robot,
-        joint_state_publisher_node,
-        rviz_node
+        spawn_robot
     ])

@@ -23,6 +23,7 @@ install(
 
 install(PROGRAMS
   ${PROJECT_NAME}/ackermann_controller.py
+  ${PROJECT_NAME}/noisy_controller.py
   DESTINATION lib/${PROJECT_NAME})
 
 install(PROGRAMS
