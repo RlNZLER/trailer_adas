@@ -9,8 +9,8 @@ class KalmanFilter(Node):
     def __init__(self):
         super().__init__('kalman_filter')
         
-        self.odom_sub_ = self.create_subscription(Odometry, 'trailer_controller/odom', self.odom_callback, 10)
-        self.imu_sub_ = self.create_subscription(Imu, 'imu/out', self.imu_callback, 10)
+        self.odom_sub_ = self.create_subscription(Odometry, 'trailer_controller/odom_noisy', self.odom_callback, 10)
+        self.imu_sub_ = self.create_subscription(Imu, 'imu', self.imu_callback, 10)
         self.odom_pub_ = self.create_publisher(Odometry, 'trailer_controller/odom_kalman', 10)
         
         self.mean_ = 0.0
