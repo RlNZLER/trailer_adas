@@ -2,14 +2,12 @@
 
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import Joy
-from geometry_msgs.msg import TwistStamped, TransformStamped
-from std_msgs.msg import Float64MultiArray
+from geometry_msgs.msg import TransformStamped
 from sensor_msgs.msg import JointState
 from rclpy.time import Time
 from rclpy.constants import S_TO_NS
 from nav_msgs.msg import Odometry
-from math import cos, sin, atan2
+from math import cos, sin
 from tf_transformations import quaternion_from_euler
 from tf2_ros import TransformBroadcaster
 import numpy as np
@@ -21,7 +19,7 @@ class NoisyController(Node):
         
         self.declare_parameter('wheel_radius', 0.5715)
         self.declare_parameter('wheel_separation', 1.225)
-        self.declare_parameter('wheel_base', 2.63)  # Distance between front and rear axles
+        self.declare_parameter('wheel_base', 2.63)
         
         self.wheel_radius_ = self.get_parameter('wheel_radius').get_parameter_value().double_value
         self.wheel_separation_ = self.get_parameter('wheel_separation').get_parameter_value().double_value
