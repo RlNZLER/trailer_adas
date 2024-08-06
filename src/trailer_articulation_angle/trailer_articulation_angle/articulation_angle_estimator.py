@@ -6,7 +6,7 @@ import cv2
 import open3d as o3d
 from cv_bridge import CvBridge
 import sensor_msgs_py.point_cloud2 as pc2
-trailer_articulation_angle
+
 class ArticulationAngleNode(Node):
     def __init__(self):
         super().__init__('articulation_angle_node')  # Node name set here
