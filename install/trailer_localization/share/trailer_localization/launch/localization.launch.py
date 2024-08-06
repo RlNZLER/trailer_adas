@@ -26,6 +26,11 @@ def generate_launch_description():
         executable='imu_republisher.py',
     )
     
+    joint_state_publisher_node = Node(
+        package="joint_state_publisher",
+        executable="joint_state_publisher"
+    )
+    
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
@@ -38,5 +43,6 @@ def generate_launch_description():
         static_transform_publisher,
         robot_localization,
         imu_republisher_py,
+        joint_state_publisher_node,
         rviz_node
     ])
