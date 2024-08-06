@@ -8,16 +8,16 @@
     name="base_link">
     <inertial>
       <origin
-        xyz="0.0151794504413043 -2.70548710772098E-16 0.504333281484515"
+        xyz="0.0151794504413043 -2.6956551943736E-16 0.504333281484515"
         rpy="0 0 0" />
       <mass
         value="5623.96238078164" />
       <inertia
         ixx="1505.2735842584"
-        ixy="2.80968637770799E-14"
+        ixy="3.10657795280898E-14"
         ixz="-96.1203292275202"
-        iyy="7932.64531285604"
-        iyz="-2.5937462802081E-14"
+        iyy="7932.64531285603"
+        iyz="-3.10015617296073E-14"
         izz="8447.43080900142" />
     </inertial>
     <visual>
@@ -229,7 +229,7 @@
       <inertia
         ixx="2.08218966287404"
         ixy="6.07695317678125E-17"
-        ixz="1.71424910145489E-17"
+        ixz="1.7142491014549E-17"
         iyy="3.08830412900736"
         iyz="1.83241460922682E-18"
         izz="2.08218966287404" />
@@ -320,7 +320,7 @@
     name="rear_left_wheel_joint"
     type="continuous">
     <origin
-      xyz="-1.17 0.6125 0"
+      xyz="-1.17000000000001 0.612499999999998 0"
       rpy="0 0 0" />
     <parent
       link="base_link" />
@@ -378,7 +378,7 @@
     name="rear_right_wheel_joint"
     type="continuous">
     <origin
-      xyz="-1.17 -0.6125 0"
+      xyz="-1.17000000000001 -0.612499999999998 0"
       rpy="0 0 0" />
     <parent
       link="base_link" />
@@ -396,17 +396,17 @@
     name="trailer">
     <inertial>
       <origin
-        xyz="-2.06473943000056 -9.58261906684124E-17 0.256889099220807"
+        xyz="-2.06473943000057 -1.88968614925875E-16 0.256889099220807"
         rpy="0 0 0" />
       <mass
         value="2715.11151397176" />
       <inertia
         ixx="634.919956534306"
-        ixy="7.70909607408193E-14"
+        ixy="7.61521195844811E-14"
         ixz="9.2945345694552"
-        iyy="1640.30654615615"
-        iyz="5.74506370494421E-15"
-        izz="2004.11171155846" />
+        iyy="1640.30654615616"
+        iyz="-6.09857971861188E-15"
+        izz="2004.11171155847" />
     </inertial>
     <visual>
       <origin
@@ -454,16 +454,16 @@
     name="t_left_wheel">
     <inertial>
       <origin
-        xyz="0 0 0"
+        xyz="0 0 1.11022302462516E-16"
         rpy="0 0 0" />
       <mass
         value="74.1907633489725" />
       <inertia
         ixx="2.08218966287404"
-        ixy="1.54577203395557E-16"
-        ixz="-2.7725470652962E-17"
+        ixy="8.52829769795647E-18"
+        ixz="-1.98584756901403E-17"
         iyy="3.08830412900736"
-        iyz="1.28966559951787E-17"
+        iyz="7.03176605089594E-18"
         izz="2.08218966287404" />
     </inertial>
     <visual>
@@ -494,14 +494,14 @@
     name="t_left_wheel_joint"
     type="continuous">
     <origin
-      xyz="-2.2086 0.6125 -0.15"
+      xyz="-2.20864 0.6125 -0.15"
       rpy="0 0 0" />
     <parent
       link="trailer" />
     <child
       link="t_left_wheel" />
     <axis
-      xyz="0 -1 0" />
+      xyz="-0.0225880418212614 -0.999744857634527 0" />
     <limit
       lower="0"
       upper="0"
@@ -518,10 +518,10 @@
         value="74.1907633489725" />
       <inertia
         ixx="2.08218966287404"
-        ixy="-1.11352546000202E-18"
-        ixz="6.83908165898515E-17"
+        ixy="-6.33759727710489E-18"
+        ixz="2.13017845392221E-16"
         iyy="3.08830412900736"
-        iyz="1.38630298064868E-17"
+        iyz="-6.070436904292E-18"
         izz="2.08218966287404" />
     </inertial>
     <visual>
@@ -552,19 +552,125 @@
     name="t_right_wheel_joint"
     type="continuous">
     <origin
-      xyz="-2.2086 -0.6125 -0.15"
+      xyz="-2.20864 -0.6125 -0.15"
       rpy="0 0 0" />
     <parent
       link="trailer" />
     <child
       link="t_right_wheel" />
     <axis
-      xyz="0 -1 0" />
+      xyz="-0.0225880418212613 -0.999744857634527 0" />
     <limit
       lower="0"
       upper="0"
       effort="100"
       velocity="31.4" />
+  </joint>
+  <link
+    name="Left_ArUco_marker">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00250000000000084" />
+      <inertia
+        ixx="1.04166666666702E-06"
+        ixy="1.29701920048421E-24"
+        ixz="8.16151537710328E-26"
+        iyy="5.21041666666841E-07"
+        iyz="-2.03287907341201E-23"
+        izz="5.21041666666842E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/Left_ArUco_marker.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/Left_ArUco_marker.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Left_ArUco_joint"
+    type="fixed">
+    <origin
+      xyz="-0.84864 0.69 0.55991"
+      rpy="0 0 0" />
+    <parent
+      link="trailer" />
+    <child
+      link="Left_ArUco_marker" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Right_ArUco_marker">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00250000000000084" />
+      <inertia
+        ixx="1.04166666666702E-06"
+        ixy="1.29701920048421E-24"
+        ixz="8.16151537710327E-26"
+        iyy="5.21041666666841E-07"
+        iyz="-2.03287907341201E-23"
+        izz="5.21041666666842E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/Right_ArUco_marker.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/Right_ArUco_marker.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Right_ArUco_joint"
+    type="fixed">
+    <origin
+      xyz="-0.84864 -0.69 0.55991"
+      rpy="0 0 0" />
+    <parent
+      link="trailer" />
+    <child
+      link="Right_ArUco_marker" />
+    <axis
+      xyz="0 0 0" />
   </joint>
   <link
     name="u1_Link">
@@ -782,17 +888,17 @@
     name="depth_camera_link">
     <inertial>
       <origin
-        xyz="-0.698189709402004 5.98392135211463E-17 0.033552049821109"
+        xyz="-0.698188658539394 8.97578938885925E-17 0.0335521985627969"
         rpy="0 0 0" />
       <mass
-        value="8787.20320689569" />
+        value="8787.20820689569" />
       <inertia
-        ixx="2433.19483459516"
-        ixy="-3.12650225766219E-13"
-        ixz="892.315238754295"
-        iyy="50275.0478791783"
-        iyz="-2.84212140029952E-14"
-        izz="51203.3625667597" />
+        ixx="2433.19755884074"
+        ixy="-1.08003666773882E-12"
+        ixz="892.312824904581"
+        iyy="50275.0652757728"
+        iyz="-1.42105836646589E-14"
+        izz="51203.3820021919" />
     </inertial>
     <visual>
       <origin
@@ -822,8 +928,8 @@
     name="depth_camera_joint"
     type="fixed">
     <origin
-      xyz="-2.16 0 0.41495"
-      rpy="0 0 3.1416" />
+      xyz="-2.16 0 0.414953113963299"
+      rpy="0 0 3.14159265358979" />
     <parent
       link="base_link" />
     <child
