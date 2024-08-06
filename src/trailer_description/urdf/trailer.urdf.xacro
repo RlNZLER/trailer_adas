@@ -564,6 +564,112 @@
       effort="100"
       velocity="31.4" />
   </joint>
+  <link
+    name="Left_ArUco_marker">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00250000000000084" />
+      <inertia
+        ixx="1.04166666666702E-06"
+        ixy="1.29701920048421E-24"
+        ixz="8.16151537710328E-26"
+        iyy="5.21041666666841E-07"
+        iyz="-2.03287907341201E-23"
+        izz="5.21041666666842E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/Left_ArUco_marker.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/Left_ArUco_marker.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Left_ArUco_joint"
+    type="fixed">
+    <origin
+      xyz="-0.84864 0.69 0.55991"
+      rpy="0 0 0" />
+    <parent
+      link="trailer" />
+    <child
+      link="Left_ArUco_marker" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Right_ArUco_marker">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00250000000000084" />
+      <inertia
+        ixx="1.04166666666702E-06"
+        ixy="1.29701920048421E-24"
+        ixz="8.16151537710327E-26"
+        iyy="5.21041666666841E-07"
+        iyz="-2.03287907341201E-23"
+        izz="5.21041666666842E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/Right_ArUco_marker.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://trailer_description/meshes/Right_ArUco_marker.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Right_ArUco_joint"
+    type="fixed">
+    <origin
+      xyz="-0.84864 -0.69 0.55991"
+      rpy="0 0 0" />
+    <parent
+      link="trailer" />
+    <child
+      link="Right_ArUco_marker" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
 
   <!-- IMU Sensor -->
   <link name="imu_link">
@@ -820,7 +926,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <box size="0.02 0.06 0.015"/>
+        <box size="0.02 0.06 0.015"/>      
       </geometry>
       <material
         name="">
