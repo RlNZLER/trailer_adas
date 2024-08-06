@@ -18,7 +18,7 @@ class ArticulationAngleNode(Node):
         self.sub_u4 = self.create_subscription(Range, 'range/u4', self.ultrasonic_callback, 10)
 
         # Subscription to the depth camera point cloud
-        self.sub_depth_camera = self.create_subscription(PointCloud2, 'depth_camera/point_cloud', self.depth_camera_callback, 10)
+        self.sub_depth_camera = self.create_subscription(PointCloud2, 'depth_camera/points', self.depth_camera_callback, 10)
 
         # Initialize sensor data
         self.ultrasonic_data = { 'u1': None, 'u2': None, 'u3': None, 'u4': None }
