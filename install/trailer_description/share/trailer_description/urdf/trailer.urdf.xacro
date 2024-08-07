@@ -585,16 +585,13 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <box size="0.001 0.1 0.1"/>  
+        <mesh
+          filename="package://trailer_description/meshes/m1_marker.STL" />
       </geometry>
-      <material name="m1_marker_material">
-        <script>
-          <uri>file://trailer_description/materials/textures/m1_marker.png</uri>
-          <name>m1_marker_material</name>
-        </script>
-        <texture>
-          <image filename="package://trailer_description/materials/textures/m1_marker.png"/>
-        </texture>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
       </material>
     </visual>
     <collision>
