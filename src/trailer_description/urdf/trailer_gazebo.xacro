@@ -158,6 +158,26 @@
         </plugin>
     </gazebo>
 
+    <gazebo reference="m1_marker">
+        <material>marker/m1_marker</material>
+    </gazebo>
+    
+    <gazebo reference="m2_marker">
+        <material>marker/m2_marker</material>
+    </gazebo>
+
+    <gazebo reference="m3_marker">
+        <material>marker/m3_marker</material>
+    </gazebo>
+
+    <gazebo reference="m4_marker">
+        <material>marker/m4_marker</material>
+    </gazebo>
+
+    <gazebo reference="m5_marker">
+        <material>marker/m5_marker</material>
+    </gazebo>
+
     <!-- IMU Sensor -->
     <gazebo reference="imu_link">
         <sensor type="imu" name="imu_sensor">
