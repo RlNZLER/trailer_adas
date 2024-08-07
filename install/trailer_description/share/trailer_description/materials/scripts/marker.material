@@ -1,0 +1,89 @@
+material marker/m1
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.5 0.5 0.5 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 0.0 0.0 0.0 1.0 0.5
+      texture_unit
+      {
+        texture m1_marker.png
+        filtering trilinear
+      }
+    }
+  }
+}
+
+material marker/m2
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.5 0.5 0.5 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 0.0 0.0 0.0 1.0 0.5
+      texture_unit
+      {
+        texture m2_marker.png
+        filtering trilinear
+      }
+    }
+  }
+}
+
+material marker/m3
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.5 0.5 0.5 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 0.0 0.0 0.0 1.0 0.5
+      texture_unit
+      {
+        texture m3_marker.png
+        filtering trilinear
+      }
+    }
+  }
+}
+
+material marker/m4
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.5 0.5 0.5 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 0.0 0.0 0.0 1.0 0.5
+      texture_unit
+      {
+        texture m4_marker.png
+        filtering trilinear
+      }
+    }
+  }
+}
+
+material marker/m5
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.5 0.5 0.5 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 0.0 0.0 0.0 1.0 0.5
+      texture_unit
+      {
+        texture m5_marker.png
+        filtering trilinear
+      }
+    }
+  }
+}

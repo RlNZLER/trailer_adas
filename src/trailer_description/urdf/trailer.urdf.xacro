@@ -599,8 +599,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m1_marker.STL" />
+        <box size="0.001 0.1 0.1"/>  
       </geometry>
     </collision>
   </link>
@@ -638,8 +637,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m2_marker.STL" />
+        <box size="0.001 0.1 0.1"/>  
       </geometry>
       <material
         name="">
@@ -652,8 +650,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m2_marker.STL" />
+        <box size="0.001 0.1 0.1"/>  
       </geometry>
     </collision>
   </link>
@@ -691,8 +688,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m3_marker.STL" />
+        <box size="0.001 0.1 0.1"/> 
       </geometry>
       <material
         name="">
@@ -705,8 +701,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m3_marker.STL" />
+        <box size="0.001 0.1 0.1"/>  
       </geometry>
     </collision>
   </link>
@@ -744,8 +739,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m4_marker.STL" />
+        <box size="0.001 0.1 0.1"/>  
       </geometry>
       <material
         name="">
@@ -758,8 +752,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m4_marker.STL" />
+        <box size="0.001 0.1 0.1"/>  
       </geometry>
     </collision>
   </link>
@@ -797,8 +790,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m5_marker.STL" />
+        <box size="0.001 0.1 0.1"/>  
       </geometry>
       <material
         name="">
@@ -811,8 +803,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://trailer_description/meshes/m5_marker.STL" />
+        <box size="0.001 0.1 0.1"/>  
       </geometry>
     </collision>
   </link>
