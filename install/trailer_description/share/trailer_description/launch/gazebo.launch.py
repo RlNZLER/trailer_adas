@@ -33,6 +33,11 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_description}],
     )
     
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+    )
+    
     start_gazebo_server = IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')))
     
     start_gazebo_client = IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')))
@@ -48,6 +53,7 @@ def generate_launch_description():
         env_variable,
         model_arg,
         robot_state_publisher_node,
+        joint_state_publisher_node,
         start_gazebo_server,
         start_gazebo_client,
         spawn_robot

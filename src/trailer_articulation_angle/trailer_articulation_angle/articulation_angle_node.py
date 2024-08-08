@@ -1,7 +1,8 @@
 import rclpy
 from rclpy import qos
 from rclpy.node import Node
-from sensor_msgs.msg import Image, CameraInfo
+from std_msgs.msg import Float64
+from sensor_msgs.msg import Image, CameraInfo, JointState
 from geometry_msgs.msg import PoseArray, Pose
 import image_geometry
 import cv2
@@ -9,34 +10,37 @@ from cv_bridge import CvBridge, CvBridgeError
 from cv2 import aruco
 import numpy as np
 
-'''
-/depth_camera/camera_info
-/depth_camera/depth/camera_info
-/depth_camera/depth/image_raw
-/depth_camera/depth/image_raw/compressed
-/depth_camera/depth/image_raw/compressedDepth
-/depth_camera/depth/image_raw/theora
-/depth_camera/image_raw
-/depth_camera/image_raw/compressed
-/depth_camera/image_raw/compressedDepth
-/depth_camera/image_raw/theora
-/depth_camera/points
-
-'''
-
 
 class ArticulationAngleNode(Node):
     def __init__(self):
         super().__init__('articulation_angle_node')
+        
+        # Publisher for articulation angle ground truth
+        self.joint_state_subscriber = self.create_subscription(JointState, 'trailer/joint_states', self.joint_state_callback, 10)
+        self.ground_truth_publisher = self.create_publisher(Float64, 'articulation_angle/ground_truth', 10)
+        
+        # Aruco marker detection
         self.camera_info_sub = self.create_subscription(CameraInfo, '/depth_camera/depth/camera_info',self.camera_info_callback, qos_profile=qos.qos_profile_sensor_data)
         self.subscription = self.create_subscription(Image, '/depth_camera/image_raw', self.image_callback, 10)
         self.publisher_ = self.create_publisher(Image, '/visualization/image_with_markers', 10)
-        self.pose_publisher = self.create_publisher(PoseArray, '/markers/poses', 10)
+        self.marker_pose_publisher = self.create_publisher(PoseArray, '/markers/poses', 10)
         self.bridge = CvBridge()
         self.aruco_dict = cv2.aruco.getPredefinedDictionary(aruco.DICT_6X6_250)
         self.parameters = cv2.aruco.DetectorParameters()
         self.detector = cv2.aruco.ArucoDetector(self.aruco_dict , self.parameters)
         self.camera_model = None
+        
+    def joint_state_callback(self, msg):
+        joint_name = "trailer_joint" 
+        if joint_name in msg.name:
+            index = msg.name.index(joint_name)
+            articulation_angle = msg.position[index]
+
+            # Publishing the articulation angle
+            angle_msg = Float64()
+            angle_msg.data = articulation_angle
+            self.ground_truth_publisher.publish(angle_msg) # Publish the articulation angle ground truth in radians
+
 
     def camera_info_callback(self, data):
         if not self.camera_model:
@@ -78,7 +82,7 @@ class ArticulationAngleNode(Node):
 
             pose_array.header.stamp = self.get_clock().now().to_msg()
             pose_array.header.frame_id = 'depth_camera_link'
-            self.pose_publisher.publish(pose_array)
+            self.marker_pose_publisher.publish(pose_array)
 
         output_image = self.bridge.cv2_to_imgmsg(result, encoding='bgr8')
         self.publisher_.publish(output_image)
