@@ -1,0 +1,6 @@
+source;share/trailer_HUD/hook/pythonpath.ps1
+source;share/trailer_HUD/hook/pythonpath.dsv
+source;share/trailer_HUD/hook/pythonpath.sh
+source;share/trailer_HUD/hook/ament_prefix_path.ps1
+source;share/trailer_HUD/hook/ament_prefix_path.dsv
+source;share/trailer_HUD/hook/ament_prefix_path.sh
