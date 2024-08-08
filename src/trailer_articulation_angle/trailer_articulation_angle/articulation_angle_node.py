@@ -24,6 +24,8 @@ class ArticulationAngleNode(Node):
         self.subscription = self.create_subscription(Image, '/depth_camera/image_raw', self.image_callback, 10)
         self.publisher_ = self.create_publisher(Image, '/visualization/image_with_markers', 10)
         self.marker_pose_publisher = self.create_publisher(PoseArray, '/markers/poses', 10)
+        self.marker_art_angle = self.create_publisher(Float64, 'articulation_angle/markers', 10)
+        
         self.bridge = CvBridge()
         self.aruco_dict = cv2.aruco.getPredefinedDictionary(aruco.DICT_6X6_250)
         self.parameters = cv2.aruco.DetectorParameters()
@@ -34,7 +36,7 @@ class ArticulationAngleNode(Node):
         joint_name = "trailer_joint" 
         if joint_name in msg.name:
             index = msg.name.index(joint_name)
-            articulation_angle = msg.position[index]
+            articulation_angle = - msg.position[index]
 
             # Publishing the articulation angle
             angle_msg = Float64()
@@ -60,6 +62,9 @@ class ArticulationAngleNode(Node):
 
         corners, ids, _ = self.detector.detectMarkers(gray)     
 
+        # Dictionary to store marker IDs and positions
+        marker_positions = {}
+
         if ids is not None and len(ids) > 0:
             pose_array = PoseArray()
             # Limit to at most 5 markers
@@ -74,18 +79,41 @@ class ArticulationAngleNode(Node):
                 rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corner, 0.05, self.camera_model.intrinsicMatrix(), self.camera_model.distortionCoeffs())
                 result = cv2.drawFrameAxes(frame, self.camera_model.intrinsicMatrix(), self.camera_model.distortionCoeffs(), rvec, tvec, 0.1)
 
+                # Create pose and append to PoseArray
                 pose = Pose()
                 pose.position.x = tvec[0][0][0]
                 pose.position.y = tvec[0][0][1]
                 pose.position.z = tvec[0][0][2]
                 pose_array.poses.append(pose)
 
+                # Store the position data in the dictionary using the marker ID as the key
+                marker_positions[ids[i][0]] = (pose.position.x, pose.position.y, pose.position.z)
+                calculated_angle = self.calculate_articulation_angle(marker_positions)
+
+            # Publish the PoseArray
             pose_array.header.stamp = self.get_clock().now().to_msg()
             pose_array.header.frame_id = 'depth_camera_link'
             self.marker_pose_publisher.publish(pose_array)
 
         output_image = self.bridge.cv2_to_imgmsg(result, encoding='bgr8')
         self.publisher_.publish(output_image)
+        
+    def calculate_articulation_angle(self, marker_positions):
+        try:
+            x_values = [pos[0] for pos in marker_positions.values()]
+            z_values = [pos[2] for pos in marker_positions.values()]
+
+            if len(x_values) < 2 or len(z_values) < 2:
+                return  # Not enough markers to calculate angle
+
+            slope, _ = np.polyfit(x_values, z_values, 1)
+            articulation_angle = np.arctan(slope)
+            angle_msg = Float64()
+            angle_msg.data = articulation_angle
+            self.marker_art_angle.publish(angle_msg)
+
+        except Exception as e:
+            return None # Return None if there is an error
 
 
 def main(args=None):

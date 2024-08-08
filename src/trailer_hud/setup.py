@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'trailer_HUD'
+package_name = 'trailer_hud'
 
 setup(
     name=package_name,
