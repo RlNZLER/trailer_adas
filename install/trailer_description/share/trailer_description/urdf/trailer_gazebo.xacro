@@ -245,16 +245,16 @@
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>10</samples>
+                        <samples>5</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.087</min_angle>
-                        <max_angle>0.087</max_angle>
+                        <min_angle>-0.025</min_angle>
+                        <max_angle>0.025</max_angle>
                     </horizontal>
                     <vertical>
-                        <samples>10</samples>
+                        <samples>5</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.087</min_angle>
-                        <max_angle>0.087</max_angle>
+                        <min_angle>-0.025</min_angle>
+                        <max_angle>0.025</max_angle>
                     </vertical>
                 </scan>
                 <range>
@@ -289,16 +289,16 @@
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>10</samples>
+                        <samples>5</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.087</min_angle>
-                        <max_angle>0.087</max_angle>
+                        <min_angle>-0.025</min_angle>
+                        <max_angle>0.025</max_angle>
                     </horizontal>
                     <vertical>
-                        <samples>10</samples>
+                        <samples>5</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.087</min_angle>
-                        <max_angle>0.087</max_angle>
+                        <min_angle>-0.025</min_angle>
+                        <max_angle>0.025</max_angle>
                     </vertical>
                 </scan>
                 <range>
@@ -333,16 +333,16 @@
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>10</samples>
+                        <samples>5</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.087</min_angle>
-                        <max_angle>0.087</max_angle>
+                        <min_angle>-0.025</min_angle>
+                        <max_angle>0.025</max_angle>
                     </horizontal>
                     <vertical>
-                        <samples>10</samples>
+                        <samples>5</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.087</min_angle>
-                        <max_angle>0.087</max_angle>
+                        <min_angle>-0.025</min_angle>
+                        <max_angle>0.025</max_angle>
                     </vertical>
                 </scan>
                 <range>
@@ -377,16 +377,16 @@
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>10</samples>
+                        <samples>5</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.087</min_angle>
-                        <max_angle>0.087</max_angle>
+                        <min_angle>-0.025</min_angle>
+                        <max_angle>0.025</max_angle>
                     </horizontal>
                     <vertical>
-                        <samples>10</samples>
+                        <samples>5</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.087</min_angle>
-                        <max_angle>0.087</max_angle>
+                        <min_angle>-0.025</min_angle>
+                        <max_angle>0.025</max_angle>
                     </vertical>
                 </scan>
                 <range>
