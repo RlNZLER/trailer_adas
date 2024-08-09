@@ -22,7 +22,7 @@ class ArticulationAngleNode(Node):
         # Aruco marker detection
         self.camera_info_sub = self.create_subscription(CameraInfo, '/depth_camera/depth/camera_info',self.camera_info_callback, qos_profile=qos.qos_profile_sensor_data)
         self.subscription = self.create_subscription(Image, '/depth_camera/image_raw', self.image_callback, 10)
-        self.publisher_ = self.create_publisher(Image, '/visualization/image_with_markers', 10)
+        self.publisher_ = self.create_publisher(Image, '/markers/image_with_markers', 10)
         self.marker_pose_publisher = self.create_publisher(PoseArray, '/markers/poses', 10)
         self.marker_art_angle = self.create_publisher(Float64, 'articulation_angle/markers', 10)
         
