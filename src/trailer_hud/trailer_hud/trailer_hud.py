@@ -29,14 +29,19 @@ font = pygame.font.SysFont(None, 24)
 # Function to draw the truck
 def draw_truck(surface, pivot, angle):
     truck_rect = pygame.Rect(0, 0, truck_width, truck_height)
-    truck_rect.center = (pivot[0], pivot[1] - truck_height//2 - 10)  # Position the truck above the pivot joint
-    rotated_truck = pygame.transform.rotate(pygame.Surface((truck_width, truck_height)), angle)
-    rotated_truck.fill(BLACK)
+    truck_rect.center = (pivot[0], pivot[1] - truck_height // 2 - 10)  # Position the truck above the pivot joint
+    truck_surface = pygame.Surface((truck_width, truck_height))
+    truck_surface.fill(BLACK)
+    rotated_truck = pygame.transform.rotate(truck_surface, angle)
     truck_rect = rotated_truck.get_rect(center=truck_rect.center)
     surface.blit(rotated_truck, truck_rect.topleft)
 
 # Function to draw the trailer with rotation
 def draw_trailer(surface, pivot, angle):
+    # Calculate the new position of the trailer's center based on the rotation
+    trailer_center_x = pivot[0] + math.sin(math.radians(angle)) * trailer_height / 2
+    trailer_center_y = pivot[1] + math.cos(math.radians(angle)) * trailer_height / 2
+    
     # Create the trailer surface
     trailer_surface = pygame.Surface((trailer_width, trailer_height))
     trailer_surface.fill(RED)
@@ -46,7 +51,7 @@ def draw_trailer(surface, pivot, angle):
     rotated_trailer = pygame.transform.rotate(trailer_surface, angle)
     
     # Adjust the trailer's position after rotation
-    rotated_trailer_rect = rotated_trailer.get_rect(center=(pivot[0], pivot[1] + trailer_height//2 + 20))
+    rotated_trailer_rect = rotated_trailer.get_rect(center=(trailer_center_x, trailer_center_y))
     
     # Draw the rotated trailer
     surface.blit(rotated_trailer, rotated_trailer_rect.topleft)
