@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             "articulation_angle_node = trailer_articulation_angle.articulation_angle_node:main",
+            "filter_data = trailer_articulation_angle.filter_data:main"
         ],
     },
 )
