@@ -2,10 +2,8 @@ import pygame
 import math
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float32, Float64MultiArray
-'''
-/vehicle_status
-'''
+from std_msgs.msg import Float64, Float64MultiArray
+
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -38,9 +36,9 @@ class TruckHUD(Node):
         # Font for dashboard
         
 
-        self.aa_ground_truth_sub_ = self.create_subscription(Float32,'articulation_angle/ground_truth', self.aa_ground_truth_callback, 10)
-        self.aa_aruco_marker_sub_ = self.create_subscription(Float32,'articulation_angle/aruco_marker', self.aa_aruco_marker_callback, 10)
-        self.aa_point_cloud_sub_ = self.create_subscription(Float32,'articulation_angle/point_cloud', self.aa_point_cloud_callback, 10)
+        self.aa_ground_truth_sub_ = self.create_subscription(Float64,'articulation_angle/ground_truth', self.aa_ground_truth_callback, 10)
+        self.aa_aruco_marker_sub_ = self.create_subscription(Float64,'articulation_angle/markers', self.aa_aruco_marker_callback, 10)
+        self.aa_point_cloud_sub_ = self.create_subscription(Float64,'articulation_angle/point_cloud', self.aa_point_cloud_callback, 10)
         # self.aa_prediction_sub_ = self.create_subscription(Float32,'articulation_angle/prediction', self.aa_prediction_callback, 10)
         
         self.vehicle_status_sub_ = self.create_subscription(Float64MultiArray,'vehicle_status', self.vehicle_status_callback, 10)
@@ -93,7 +91,7 @@ class TruckHUD(Node):
         trailer_p_surface = pygame.Surface((4, 39.2889))
         trailer_p_surface.fill(RED)
         trailer_p_surface.set_colorkey(WHITE)
-        rotated_p_trailer = pygame.transform.rotate(trailer_p_surface, angle)
+        rotated_p_trailer = pygame.transform.rotate(trailer_p_surface, math.degrees(angle))
         rotated_p_trailer_rect = rotated_p_trailer.get_rect(center=(trailer_p_center_x, trailer_p_center_y))
         surface.blit(rotated_p_trailer, rotated_p_trailer_rect.topleft)
         
@@ -102,9 +100,10 @@ class TruckHUD(Node):
         trailer_surface = pygame.Surface((self.trailer_width, self.trailer_height))
         trailer_surface.fill(RED)
         trailer_surface.set_colorkey(WHITE)
-        rotated_trailer = pygame.transform.rotate(trailer_surface, angle)
+        rotated_trailer = pygame.transform.rotate(trailer_surface, math.degrees(angle))
         rotated_trailer_rect = rotated_trailer.get_rect(center=(trailer_center_x, trailer_center_y))
         surface.blit(rotated_trailer, rotated_trailer_rect.topleft)
+
 
     # Function to draw the dashboard on the left side
     def draw_left_dashboard(self, surface, font):
@@ -157,6 +156,8 @@ class TruckHUD(Node):
 
         running = True
         while running:
+            rclpy.spin_once(self, timeout_sec=0)  # Non-blocking spin that allows ROS callbacks to process
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -179,6 +180,7 @@ class TruckHUD(Node):
 
         # Done! Time to quit.
         pygame.quit()
+
 
 def main(args=None):
     rclpy.init(args=args)
