@@ -2,22 +2,22 @@
 
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import Range
+from sensor_msgs.msg import PointCloud
 from std_msgs.msg import Float64
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d import Axes3D
 
-class PointCloud(Node):
+class MultiRadarPointCloud(Node):
     def __init__(self):
-        super().__init__('point_cloud')
+        super().__init__('multi_radar_point_cloud')
 
         # Create subscriptions for all four radar topics
-        self.create_subscription(Range, 'range/u1', self.point_cloud_callback_u1, 10)
-        self.create_subscription(Range, 'range/u2', self.point_cloud_callback_u2, 10)
-        self.create_subscription(Range, 'range/u3', self.point_cloud_callback_u3, 10)
-        self.create_subscription(Range, 'range/u4', self.point_cloud_callback_u4, 10)
+        self.create_subscription(PointCloud, 'range/u1', self.point_cloud_callback_u1, 10)
+        self.create_subscription(PointCloud, 'range/u2', self.point_cloud_callback_u2, 10)
+        self.create_subscription(PointCloud, 'range/u3', self.point_cloud_callback_u3, 10)
+        self.create_subscription(PointCloud, 'range/u4', self.point_cloud_callback_u4, 10)
         
         # 
         self.pc_art_angle_pub_ = self.create_publisher(Float64, 'articulation_angle/point_cloud', 10)
@@ -63,26 +63,54 @@ class PointCloud(Node):
         self.ani = FuncAnimation(self.fig, self.update_plot, interval=100)
         
     def point_cloud_callback_u1(self, msg):
-        mean_x = msg.range
+        x_values_all = np.array([point.x for point in msg.points])
+        if x_values_all.size > 0:
+            # Set a threshold to filter x-values, e.g., mean + standard deviation
+            threshold = np.mean(x_values_all) + np.std(x_values_all)
+            x_values = x_values_all[x_values_all > threshold]
+            mean_x = np.mean(x_values) if x_values.size > 0 else 0
+        else:
+            mean_x = 0
         self.points_u1 = (mean_x, self.y_u1, 0)
 
     def point_cloud_callback_u2(self, msg):
-        mean_x = msg.range
+        x_values_all = np.array([point.x for point in msg.points])
+        if x_values_all.size > 0:
+            # Set a threshold to filter x-values, e.g., mean + standard deviation
+            threshold = np.mean(x_values_all) + np.std(x_values_all)
+            x_values = x_values_all[x_values_all > threshold]
+            mean_x = np.mean(x_values) if x_values.size > 0 else 0
+        else:
+            mean_x = 0
         self.points_u2 = (mean_x, self.y_u2, 0)
 
     def point_cloud_callback_u3(self, msg):
-        mean_x = msg.range
+        x_values_all = np.array([point.x for point in msg.points])
+        if x_values_all.size > 0:
+            # Set a threshold to filter x-values, e.g., mean + standard deviation
+            threshold = np.mean(x_values_all) + np.std(x_values_all)
+            x_values = x_values_all[x_values_all > threshold]
+            mean_x = np.mean(x_values) if x_values.size > 0 else 0
+        else:
+            mean_x = 0
         self.points_u3 = (mean_x, self.y_u3, 0)
 
     def point_cloud_callback_u4(self, msg):
-        mean_x = msg.range
+        x_values_all = np.array([point.x for point in msg.points])
+        if x_values_all.size > 0:
+            # Set a threshold to filter x-values, e.g., mean + standard deviation
+            threshold = np.mean(x_values_all) + np.std(x_values_all)
+            x_values = x_values_all[x_values_all > threshold]
+            mean_x = np.mean(x_values) if x_values.size > 0 else 0
+        else:
+            mean_x = 0
         self.points_u4 = (mean_x, self.y_u4, 0)
         
     def update_plot(self, frame):
         self.ax.clear()
-        self.ax.set_xlim(0, 5)
-        self.ax.set_ylim(0, 5)
-        self.ax.set_zlim(0, 5)
+        self.ax.set_xlim(0, 10)
+        self.ax.set_ylim(-1, 1)
+        self.ax.set_zlim(-1, 1)
         # Corrected method to unpack x, y, z for scatter
         self.ax.scatter(self.points_u1[0], self.points_u1[1], self.points_u1[2], c='r', label='Radar U1')
         self.ax.scatter(self.points_u2[0], self.points_u2[1], self.points_u2[2], c='g', label='Radar U2')
@@ -93,7 +121,7 @@ class PointCloud(Node):
         
 def main(args=None):
     rclpy.init(args=args)
-    node = PointCloud()
+    node = MultiRadarPointCloud()
     
     # Use a separate thread to run the ROS2 spin loop
     import threading
