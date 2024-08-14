@@ -7,6 +7,7 @@ import sensor_msgs_py.point_cloud2 as pc2
 from std_msgs.msg import Float64
 import numpy as np
 import open3d as o3d
+from sklearn.linear_model import RANSACRegressor
 
 class PointCloudProcessor(Node):
     def __init__(self):
@@ -74,7 +75,7 @@ class PointCloudProcessor(Node):
         x_values = np.array([point[0] for point in filtered_points])
         y_values = np.array([point[1] for point in filtered_points])
 
-        # Prepare the matrix for lstsq
+        # Prepare the matrix for least squares
         A = np.vstack([x_values, np.ones(len(x_values))]).T  # T for transpose
         m, b = np.linalg.lstsq(A, y_values, rcond=None)[0]  # m is slope, b is intercept
 
@@ -90,7 +91,7 @@ class PointCloudProcessor(Node):
         min_range = min(y_values) - 0.05
         max_range = max(y_values) + 0.05
 
-        # Filter based on x-axis values instead of z-axis
+        # Filter based on z-axis values instead of x-axis
         if self.point_cloud is not None and self.point_cloud.ndim == 2 and self.point_cloud.shape[1] == 3:
             # Ensure header is correctly obtained
             if not self.point_cloud_header:
@@ -100,14 +101,25 @@ class PointCloudProcessor(Node):
             z_filtered = self.point_cloud[(self.point_cloud[:, 2] >= min_range) & (self.point_cloud[:, 2] <= max_range)]
 
             if z_filtered.size > 0:
+                # Fit RANSAC to the z_filtered points
+                X = z_filtered[:, :2]  # x and y as features
+                y = z_filtered[:, 2]   # z as the dependent variable
+                ransac = RANSACRegressor()
+                ransac.fit(X, y)
+                inlier_mask = ransac.inlier_mask_
+                outlier_mask = np.logical_not(inlier_mask)
+
+                # Choose what to publish based on RANSAC inliers
+                inlier_points = z_filtered[inlier_mask]
                 header = self.point_cloud_header
-                filtered_cloud_msg = pc2.create_cloud_xyz32(header, z_filtered.tolist())
-                self.pc_pub_.publish(filtered_cloud_msg)
-                self.get_logger().info(f"Published filtered point cloud within range ({min_range}, {max_range}).")
+                inlier_cloud_msg = pc2.create_cloud_xyz32(header, inlier_points.tolist())
+                self.pc_pub_.publish(inlier_cloud_msg)
+                self.get_logger().info(f"Published RANSAC inlier point cloud within range ({min_range}, {max_range}).")
             else:
-                self.get_logger().warn("No points met the x-coordinate filtering criteria.")
+                self.get_logger().warn("No points met the z-coordinate filtering criteria after RANSAC.")
         else:
             self.get_logger().warn("Invalid or empty point cloud data.")
+
 
 
 def main(args=None):
