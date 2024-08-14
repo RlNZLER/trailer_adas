@@ -20,8 +20,8 @@ class ArticulationAngleNode(Node):
         self.ground_truth_publisher = self.create_publisher(Float64, 'articulation_angle/ground_truth', 10)
         
         # Aruco marker detection
-        self.camera_info_sub = self.create_subscription(CameraInfo, '/depth_camera/depth/camera_info',self.camera_info_callback, qos_profile=qos.qos_profile_sensor_data)
-        self.subscription = self.create_subscription(Image, '/depth_camera/image_raw', self.image_callback, 10)
+        self.camera_info_sub = self.create_subscription(CameraInfo, '/camera/depth/camera_info',self.camera_info_callback, qos_profile=qos.qos_profile_sensor_data)
+        self.subscription = self.create_subscription(Image, '/camera/image_raw', self.image_callback, 10)
         self.publisher_ = self.create_publisher(Image, '/markers/image_with_markers', 10)
         self.marker_pose_publisher = self.create_publisher(PoseArray, '/markers/poses', 10)
         self.marker_art_angle = self.create_publisher(Float64, 'articulation_angle/markers', 10)
@@ -92,7 +92,7 @@ class ArticulationAngleNode(Node):
 
             # Publish the PoseArray
             pose_array.header.stamp = self.get_clock().now().to_msg()
-            pose_array.header.frame_id = 'depth_camera_link'
+            pose_array.header.frame_id = 'camera_link'
             self.marker_pose_publisher.publish(pose_array)
 
         output_image = self.bridge.cv2_to_imgmsg(result, encoding='bgr8')
