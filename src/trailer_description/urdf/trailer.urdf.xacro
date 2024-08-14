@@ -1055,7 +1055,7 @@
       xyz="0 0 0" />
   </joint>
   <link
-    name="depth_camera_link">
+    name="camera_link">
     <inertial>
       <origin
         xyz="-0.698189709402004 5.98392135211463E-17 0.033552049821109"
@@ -1093,7 +1093,7 @@
     </collision>
   </link>
   <joint
-    name="depth_camera_joint"
+    name="camera_joint"
     type="fixed">
     <origin
       xyz="-2.16 0 0.41495"
@@ -1101,8 +1101,14 @@
     <parent
       link="base_link" />
     <child
-      link="depth_camera_link" />
+      link="camera_link" />
     <axis
       xyz="0 0 0" />
+  </joint>
+  <link name="depth_camera_link"/>
+  <joint name="depth_camera_joint" type="fixed">
+      <parent link="camera_link"/>
+      <child link="depth_camera_link"/>
+      <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
   </joint>
 </robot>
