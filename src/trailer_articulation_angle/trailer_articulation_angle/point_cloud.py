@@ -5,106 +5,69 @@ from rclpy.node import Node
 from sensor_msgs.msg import Range
 from std_msgs.msg import Float64
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-from mpl_toolkits.mplot3d import Axes3D
 
 class PointCloud(Node):
     def __init__(self):
         super().__init__('point_cloud')
-
-        # Create subscriptions for all four radar topics
+        
         self.create_subscription(Range, 'range/u1', self.point_cloud_callback_u1, 10)
         self.create_subscription(Range, 'range/u2', self.point_cloud_callback_u2, 10)
         self.create_subscription(Range, 'range/u3', self.point_cloud_callback_u3, 10)
         self.create_subscription(Range, 'range/u4', self.point_cloud_callback_u4, 10)
         
-        # 
         self.pc_art_angle_pub_ = self.create_publisher(Float64, 'articulation_angle/point_cloud', 10)
+        self.timer_ = self.create_timer(0.1, self.calculate_articulation_angle)
         
-        # Initialize the points
-        self.y_u1 = -0.6125
-        self.y_u2 = -0.26
-        self.y_u3 = 0.26
-        self.y_u4 = 0.6125
-        self.points_u1 = (0, self.y_u1)
-        self.points_u2 = (0, self.y_u2)
-        self.points_u3 = (0, self.y_u3)
-        self.points_u4 = (0, self.y_u4)
-        
-        # Initialize Matplotlib figure and 3D axis
-        self.fig = plt.figure()
-        self.ax = self.fig.add_subplot(111, projection='3d')
-        
-        # Initialize scatter plots for each radar with larger point size
-        self.scatter_u1 = self.ax.scatter([], [], [], s=20, c='r', label='Radar U1')
-        self.scatter_u2 = self.ax.scatter([], [], [], s=20, c='g', label='Radar U2')
-        self.scatter_u3 = self.ax.scatter([], [], [], s=20, c='b', label='Radar U3')
-        self.scatter_u4 = self.ax.scatter([], [], [], s=20, c='y', label='Radar U4')
-        
-        # Setup plot limits for a smaller scale
-        self.ax.set_xlim(0, 2)
-        self.ax.set_ylim(0, 2)
-        self.ax.set_zlim(0, 2)
+        self.x_u1 = -0.6125
+        self.x_u2 = -0.26
+        self.x_u3 = 0.26
+        self.x_u4 = 0.6125
+        self.points_u1 = None
+        self.points_u2 = None
+        self.points_u3 = None
+        self.points_u4 = None
 
-        # Set labels and legend
-        self.ax.set_xlabel('X')
-        self.ax.set_ylabel('Y')
-        self.ax.set_zlabel('Z')
-        self.ax.legend()
-
-        # To store points from each radar
-        self.points_u1 = []
-        self.points_u2 = []
-        self.points_u3 = []
-        self.points_u4 = []
-
-        # Call the animation function repeatedly
-        self.ani = FuncAnimation(self.fig, self.update_plot, interval=100)
-        
     def point_cloud_callback_u1(self, msg):
-        mean_x = msg.range
-        self.points_u1 = (mean_x, self.y_u1, 0)
+        self.points_u1 = (self.x_u1, msg.range)
 
     def point_cloud_callback_u2(self, msg):
-        mean_x = msg.range
-        self.points_u2 = (mean_x, self.y_u2, 0)
+        self.points_u2 = (self.x_u2, msg.range)
 
     def point_cloud_callback_u3(self, msg):
-        mean_x = msg.range
-        self.points_u3 = (mean_x, self.y_u3, 0)
+        self.points_u3 = (self.x_u3, msg.range)
 
     def point_cloud_callback_u4(self, msg):
-        mean_x = msg.range
-        self.points_u4 = (mean_x, self.y_u4, 0)
+        self.points_u4 = (self.x_u4, msg.range)
+
+    def calculate_articulation_angle(self):
+        all_points = [self.points_u1, self.points_u2, self.points_u3, self.points_u4]
+        filtered_points = [point for point in all_points if point is not None and point[0] <= 2]
+
+        if len(filtered_points) < 2:
+            self.get_logger().warn("Not enough points to calculate a slope.")
+            return
         
-    def update_plot(self, frame):
-        self.ax.clear()
-        self.ax.set_xlim(0, 5)
-        self.ax.set_ylim(0, 5)
-        self.ax.set_zlim(0, 5)
-        # Corrected method to unpack x, y, z for scatter
-        self.ax.scatter(self.points_u1[0], self.points_u1[1], self.points_u1[2], c='r', label='Radar U1')
-        self.ax.scatter(self.points_u2[0], self.points_u2[1], self.points_u2[2], c='g', label='Radar U2')
-        self.ax.scatter(self.points_u3[0], self.points_u3[1], self.points_u3[2], c='b', label='Radar U3')
-        self.ax.scatter(self.points_u4[0], self.points_u4[1], self.points_u4[2], c='y', label='Radar U4')
-        self.ax.legend()
-        plt.draw()
+        x_values = np.array([point[0] for point in filtered_points])
+        y_values = np.array([point[1] for point in filtered_points])
         
+        # Prepare the matrix for lstsq
+        A = np.vstack([x_values, np.ones(len(x_values))]).T  # T for transpose
+        m, b = np.linalg.lstsq(A, y_values, rcond=None)[0]  # m is slope, b is intercept
+        
+        # Calculate the angle of the slope in radians
+        angle = -np.arctan(m)
+        
+        # Publish the articulation angle in radians
+        msg = Float64()
+        msg.data = angle
+        self.pc_art_angle_pub_.publish(msg)
+
+
 def main(args=None):
     rclpy.init(args=args)
-    node = PointCloud()
-    
-    # Use a separate thread to run the ROS2 spin loop
-    import threading
-    ros_thread = threading.Thread(target=rclpy.spin, args=(node,), daemon=True)
-    ros_thread.start()
-
-    # Start the Matplotlib event loop
-    plt.show()
-    
-    # Clean up after plot window is closed
-    node.destroy_node()
+    point_cloud_node = PointCloud()
+    rclpy.spin(point_cloud_node)
+    point_cloud_node.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
