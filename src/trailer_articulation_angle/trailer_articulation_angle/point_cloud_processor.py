@@ -65,7 +65,7 @@ class PointCloudProcessor(Node):
             
     def process_point_cloud(self):
         all_points = [self.points_u1, self.points_u2, self.points_u3, self.points_u4]
-        filtered_points = [point for point in all_points if point is not None and point[0] <= 2]
+        filtered_points = [point for point in all_points if point is not None and point[1] <= 2]
 
         if len(filtered_points) < 2:
             self.get_logger().warn("Not enough points to calculate a slope.")
@@ -103,7 +103,7 @@ class PointCloudProcessor(Node):
                 header = self.point_cloud_header
                 filtered_cloud_msg = pc2.create_cloud_xyz32(header, z_filtered.tolist())
                 self.pc_pub_.publish(filtered_cloud_msg)
-                self.get_logger().info("Published filtered point cloud.")
+                self.get_logger().info(f"Published filtered point cloud within range ({min_range}, {max_range}).")
             else:
                 self.get_logger().warn("No points met the x-coordinate filtering criteria.")
         else:
