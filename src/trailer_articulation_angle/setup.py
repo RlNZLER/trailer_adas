@@ -25,7 +25,7 @@ setup(
         'console_scripts': [
             "articulation_angle_node = trailer_articulation_angle.articulation_angle_node:main",
             "point_cloud = trailer_articulation_angle.point_cloud:main",
-            "radar_point_cloud_processor = trailer_articulation_angle.radar_point_cloud_processor:main"
+            "point_cloud_processor = trailer_articulation_angle.point_cloud_processor:main"
         ],
     },
 )
