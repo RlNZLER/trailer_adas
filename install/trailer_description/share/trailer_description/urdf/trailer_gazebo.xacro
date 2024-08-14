@@ -238,42 +238,43 @@
     <!-- Ultrasonic Sensor u1 -->
     <gazebo reference="u1_Link">
         <material>Gazebo/Red</material>
-        <sensor name="radar" type="ray">
+        <sensor name="u1_sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
             <always_on>true</always_on>
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>5</samples>
+                        <samples>10</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.025</min_angle>
-                        <max_angle>0.025</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </horizontal>
                     <vertical>
-                        <samples>5</samples>
+                        <samples>10</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.025</min_angle>
-                        <max_angle>0.025</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </vertical>
                 </scan>
                 <range>
                     <min>0.010</min>
-                    <max>2.0</max>
+                    <max>8.0</max>
                     <resolution>0.01</resolution>
                 </range>
                 <noise>
                     <type>gaussian</type>
                     <mean>0.0</mean>
-                    <stddev>0.05</stddev>
+                    <stddev>0.01</stddev>
                 </noise>
             </ray>
             <plugin name="u1_range_sensor" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
                     <remapping>~/out:=range/u1</remapping>
                 </ros>
-                <output_type>sensor_msgs/PointCloud</output_type>
-                <frame_name>u1_Link</frame_name>
+                    <output_type>sensor_msgs/Range</output_type>
+                    <radiation_type>ultrasound</radiation_type>
+                    <frame_name>u1_Link</frame_name>
             </plugin>
         </sensor>
     </gazebo>
@@ -281,42 +282,43 @@
     <!-- Ultrasonic Sensor u2 -->
     <gazebo reference="u2_Link">
         <material>Gazebo/Red</material>
-        <sensor name="radar" type="ray">
+        <sensor name="u2_sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
             <always_on>true</always_on>
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>5</samples>
+                        <samples>10</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.025</min_angle>
-                        <max_angle>0.025</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </horizontal>
                     <vertical>
-                        <samples>5</samples>
+                        <samples>10</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.025</min_angle>
-                        <max_angle>0.025</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </vertical>
                 </scan>
                 <range>
                     <min>0.010</min>
-                    <max>2.0</max>
+                    <max>8.0</max>
                     <resolution>0.01</resolution>
                 </range>
                 <noise>
                     <type>gaussian</type>
                     <mean>0.0</mean>
-                    <stddev>0.05</stddev>
+                    <stddev>0.01</stddev>
                 </noise>
             </ray>
             <plugin name="u2_range_sensor" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
                     <remapping>~/out:=range/u2</remapping>
                 </ros>
-                <output_type>sensor_msgs/PointCloud</output_type>
-                <frame_name>u2_Link</frame_name>
+                    <output_type>sensor_msgs/Range</output_type>
+                    <radiation_type>ultrasound</radiation_type>
+                    <frame_name>u2_Link</frame_name>
             </plugin>
         </sensor>
     </gazebo>
@@ -324,42 +326,43 @@
     <!-- Ultrasonic Sensor u3 -->
     <gazebo reference="u3_Link">
         <material>Gazebo/Red</material>
-        <sensor name="radar" type="ray">
+        <sensor name="u3_sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
             <always_on>true</always_on>
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>5</samples>
+                        <samples>10</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.025</min_angle>
-                        <max_angle>0.025</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </horizontal>
                     <vertical>
-                        <samples>5</samples>
+                        <samples>10</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.025</min_angle>
-                        <max_angle>0.025</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </vertical>
                 </scan>
                 <range>
                     <min>0.010</min>
-                    <max>2.0</max>
+                    <max>8.0</max>
                     <resolution>0.01</resolution>
                 </range>
                 <noise>
                     <type>gaussian</type>
                     <mean>0.0</mean>
-                    <stddev>0.05</stddev>
+                    <stddev>0.01</stddev>
                 </noise>
             </ray>
             <plugin name="u3_range_sensor" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
                     <remapping>~/out:=range/u3</remapping>
                 </ros>
-                <output_type>sensor_msgs/PointCloud</output_type>
-                <frame_name>u3_Link</frame_name>
+                    <output_type>sensor_msgs/Range</output_type>
+                    <radiation_type>ultrasound</radiation_type>
+                    <frame_name>u3_Link</frame_name>
             </plugin>
         </sensor>
     </gazebo>
@@ -367,42 +370,43 @@
     <!-- Ultrasonic Sensor u4 -->
     <gazebo reference="u4_Link">
         <material>Gazebo/Red</material>
-        <sensor name="radar" type="ray">
+        <sensor name="u4_sonar" type="ray">
             <visualize>true</visualize>
             <update_rate>10</update_rate>
             <always_on>true</always_on>
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>5</samples>
+                        <samples>10</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.025</min_angle>
-                        <max_angle>0.025</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </horizontal>
                     <vertical>
-                        <samples>5</samples>
+                        <samples>10</samples>
                         <resolution>1.0</resolution>
-                        <min_angle>-0.025</min_angle>
-                        <max_angle>0.025</max_angle>
+                        <min_angle>-0.087</min_angle>
+                        <max_angle>0.087</max_angle>
                     </vertical>
                 </scan>
                 <range>
                     <min>0.010</min>
-                    <max>2.0</max>
+                    <max>8.0</max>
                     <resolution>0.01</resolution>
                 </range>
                 <noise>
                     <type>gaussian</type>
                     <mean>0.0</mean>
-                    <stddev>0.05</stddev>
+                    <stddev>0.01</stddev>
                 </noise>
             </ray>
             <plugin name="u4_range_sensor" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
                     <remapping>~/out:=range/u4</remapping>
                 </ros>
-                <output_type>sensor_msgs/PointCloud</output_type>
-                <frame_name>u4_Link</frame_name>
+                    <output_type>sensor_msgs/Range</output_type>
+                    <radiation_type>ultrasound</radiation_type>
+                    <frame_name>u4_Link</frame_name>
             </plugin>
         </sensor>
     </gazebo>
