@@ -14,11 +14,5 @@ def generate_launch_description():
             executable='point_cloud',
             name='point_cloud',
             output='screen'
-        ),
-        Node(
-            package='rviz2',
-            executable='rviz2',
-            name='rviz2',
-            output='screen'
         )
     ])

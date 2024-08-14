@@ -15,6 +15,7 @@ class PointCloud(Node):
         self.create_subscription(Range, 'range/u3', self.point_cloud_callback_u3, 10)
         self.create_subscription(Range, 'range/u4', self.point_cloud_callback_u4, 10)
         
+        # Publish the articulation angle in radians
         self.pc_art_angle_pub_ = self.create_publisher(Float64, 'articulation_angle/point_cloud', 10)
         self.timer_ = self.create_timer(0.1, self.calculate_articulation_angle)
         
