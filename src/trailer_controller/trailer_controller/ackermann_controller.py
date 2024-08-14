@@ -19,9 +19,10 @@ class AckermannController(Node):
     def __init__(self):
         super().__init__('ackermann_controller')
         
-        self.declare_parameter('wheel_radius', 0.5715)
-        self.declare_parameter('wheel_separation', 1.225)
-        self.declare_parameter('wheel_base', 2.63)  # Distance between front and rear axles
+        self.speed_scaling_factor = 2.0
+        self.declare_parameter('wheel_radius', 0.28575)     # Radius of the wheels.
+        self.declare_parameter('wheel_separation', 1.225)   # Distance between the two rear wheels.
+        self.declare_parameter('wheel_base', 2.63)          # Distance between front and rear axles.
         
         self.wheel_radius_ = self.get_parameter('wheel_radius').get_parameter_value().double_value
         self.wheel_separation_ = self.get_parameter('wheel_separation').get_parameter_value().double_value
@@ -68,8 +69,8 @@ class AckermannController(Node):
     def joy_callback(self, msg):
         # Initialize a variable to determine if the wireless joystick is active
         wireless_joystick_active = False
-        if msg.axes[4] == 1:
-            wireless_joystick_active = True
+        # if msg.axes[4] == 1:
+        #     wireless_joystick_active = True
         if wireless_joystick_active:
             # Use key 3 for wireless joystick
             linear_velocity = msg.axes[3] * 10
@@ -77,42 +78,55 @@ class AckermannController(Node):
             # Use key 4 for wired joystick
             linear_velocity = msg.axes[4] * 10
 
-        angular_velocity = msg.axes[0] * 2.243782312
-
-        self.get_logger().info(f"Received linear_velocity: {linear_velocity}, angular_velocity: {angular_velocity}")
+        angular_velocity = msg.axes[0] * 2.2437823071658
 
         if angular_velocity != 0:
-            turning_radius = linear_velocity / angular_velocity
-            self.get_logger().info(f"Turning radius: {turning_radius}")
+            turning_radius = abs(linear_velocity / angular_velocity)
+            
+            R_inner = abs(turning_radius - (self.wheel_separation_ / 2))
+            R_outer = abs(turning_radius + (self.wheel_separation_ / 2))
 
             if angular_velocity > 0:  # Turning left
-                left_wheel_angle = -atan2(self.wheel_base_, turning_radius - (self.wheel_separation_ / 2))
-                right_wheel_angle = -atan2(self.wheel_base_, turning_radius + (self.wheel_separation_ / 2))
+                left_wheel_angle = -atan2(self.wheel_base_, R_inner)
+                right_wheel_angle = -atan2(self.wheel_base_, R_outer)
                 
-                R_inner = turning_radius - (self.wheel_separation_ / 2)
-                R_outer = turning_radius + (self.wheel_separation_ / 2)
-                
-                V_rear_left = angular_velocity * R_inner
-                V_rear_right = angular_velocity * R_outer
+                if linear_velocity == 0:
+                    V_rear_left = 0.0
+                    V_rear_right = 0.0
+                elif linear_velocity > 0:
+                    V_rear_left = abs(angular_velocity * R_inner)
+                    V_rear_right = abs(angular_velocity * R_outer)
+                else:
+                    V_rear_left = -abs(angular_velocity * R_inner)
+                    V_rear_right = -abs(angular_velocity * R_outer)
+                    
             else:  # Turning right
-                left_wheel_angle = atan2(self.wheel_base_, turning_radius + (self.wheel_separation_ / 2))
-                right_wheel_angle = atan2(self.wheel_base_, turning_radius - (self.wheel_separation_ / 2))
-                
-                R_inner = turning_radius + (self.wheel_separation_ / 2)
-                R_outer = turning_radius - (self.wheel_separation_ / 2)
-                
-                V_rear_right = angular_velocity * R_inner
-                V_rear_left = angular_velocity * R_outer
-        else:
+                left_wheel_angle = atan2(self.wheel_base_, R_outer)
+                right_wheel_angle = atan2(self.wheel_base_, R_inner)
+                                
+                if linear_velocity == 0:
+                    V_rear_left = 0.0
+                    V_rear_right = 0.0
+                elif linear_velocity > 0:
+                    V_rear_right = abs(angular_velocity * R_inner)
+                    V_rear_left = abs(angular_velocity * R_outer)
+                else:
+                    V_rear_right = -abs(angular_velocity * R_inner)
+                    V_rear_left = -abs(angular_velocity * R_outer)
+                    
+        elif linear_velocity != 0 and angular_velocity == 0:
             left_wheel_angle = 0.0
             right_wheel_angle = 0.0
             V_rear_left = V_rear_right = linear_velocity
-
-        self.get_logger().info(f"Left wheel angle: {left_wheel_angle}, Right wheel angle: {right_wheel_angle}")
-        self.get_logger().info(f"V_rear_left: {V_rear_left}, V_rear_right: {V_rear_right}")
+            
+        else:
+            left_wheel_angle = 0.0
+            right_wheel_angle = 0.0
+            V_rear_left = 0.0
+            V_rear_right = 0.0
 
         wheel_speed_msg = Float64MultiArray()
-        wheel_speed_msg.data = [V_rear_left / self.wheel_radius_, V_rear_right / self.wheel_radius_]
+        wheel_speed_msg.data = [V_rear_left / (self.speed_scaling_factor * self.wheel_radius_), V_rear_right / (self.speed_scaling_factor * self.wheel_radius_)]
         self.wheel_cmd_pub_.publish(wheel_speed_msg)
 
         steer_cmd_msg = Float64MultiArray()
