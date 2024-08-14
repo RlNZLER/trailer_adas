@@ -42,7 +42,7 @@ class PointCloud(Node):
 
     def calculate_articulation_angle(self):
         all_points = [self.points_u1, self.points_u2, self.points_u3, self.points_u4]
-        filtered_points = [point for point in all_points if point is not None and point[0] <= 2]
+        filtered_points = [point for point in all_points if point is not None and point[1] <= 2]
 
         if len(filtered_points) < 2:
             self.get_logger().warn("Not enough points to calculate a slope.")
