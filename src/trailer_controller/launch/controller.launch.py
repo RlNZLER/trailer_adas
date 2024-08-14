@@ -31,7 +31,7 @@ def generate_launch_description():
     
     wheel_radius_arg = DeclareLaunchArgument(
         'wheel_radius',
-        default_value='0.5715',
+        default_value='0.28575',
         description='Wheel radius'
     )
     
