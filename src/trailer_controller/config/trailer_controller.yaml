@@ -47,8 +47,8 @@ ackermann_steering_controller:
     wheelbase: 2.63
     front_wheel_track: 1.225
     rear_wheel_track: 1.225
-    front_wheels_radius: 0.5715
-    rear_wheels_radius: 0.5715
+    front_wheels_radius: 0.28575
+    rear_wheels_radius: 0.28575
 
     # # Odometry
     # odom_frame_id: odom
