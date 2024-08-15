@@ -8,6 +8,7 @@ from std_msgs.msg import Float64
 import numpy as np
 import open3d as o3d
 from sklearn.linear_model import RANSACRegressor
+from sklearn.decomposition import PCA
 
 class PointCloudProcessor(Node):
     def __init__(self):
@@ -20,6 +21,7 @@ class PointCloudProcessor(Node):
         
         self.create_subscription(PointCloud2, 'camera/points', self.point_cloud_callback, 10)
         
+        self.range_art_angle_pub_ = self.create_publisher(Float64, 'articulation_angle/range', 10)
         self.pc_art_angle_pub_ = self.create_publisher(Float64, 'articulation_angle/point_cloud', 10)
         self.pc_pub_ = self.create_publisher(PointCloud2, 'filtered_point_cloud', 10)
         
@@ -75,25 +77,18 @@ class PointCloudProcessor(Node):
         x_values = np.array([point[0] for point in filtered_points])
         y_values = np.array([point[1] for point in filtered_points])
 
-        # Prepare the matrix for least squares
-        A = np.vstack([x_values, np.ones(len(x_values))]).T  # T for transpose
-        m, b = np.linalg.lstsq(A, y_values, rcond=None)[0]  # m is slope, b is intercept
+        A = np.vstack([x_values, np.ones(len(x_values))]).T
+        m, b = np.linalg.lstsq(A, y_values, rcond=None)[0]
 
-        # Calculate the angle of the slope in radians
         angle = -np.arctan(m)
-
-        # Publish the articulation angle in radians
         msg = Float64()
         msg.data = angle
-        self.pc_art_angle_pub_.publish(msg)
+        self.range_art_angle_pub_.publish(msg)
 
-        # Use y-values to determine the range for x filtering
         min_range = min(y_values) - 0.05
         max_range = max(y_values) + 0.05
 
-        # Filter based on z-axis values instead of x-axis
         if self.point_cloud is not None and self.point_cloud.ndim == 2 and self.point_cloud.shape[1] == 3:
-            # Ensure header is correctly obtained
             if not self.point_cloud_header:
                 self.get_logger().error("Point cloud header is not set.")
                 return
@@ -101,20 +96,29 @@ class PointCloudProcessor(Node):
             z_filtered = self.point_cloud[(self.point_cloud[:, 2] >= min_range) & (self.point_cloud[:, 2] <= max_range)]
 
             if z_filtered.size > 0:
-                # Fit RANSAC to the z_filtered points
-                X = z_filtered[:, :2]  # x and y as features
-                y = z_filtered[:, 2]   # z as the dependent variable
+                X = z_filtered[:, :2]
+                y = z_filtered[:, 2]
                 ransac = RANSACRegressor()
                 ransac.fit(X, y)
                 inlier_mask = ransac.inlier_mask_
-                outlier_mask = np.logical_not(inlier_mask)
 
-                # Choose what to publish based on RANSAC inliers
-                inlier_points = z_filtered[inlier_mask]
+                pca = PCA(n_components=3)
+                pca.fit(z_filtered[inlier_mask])  # Fit PCA only on inliers
+
+                normal_vector = pca.components_[np.argmin(pca.explained_variance_)]
+                angle_with_x_axis = np.arccos(normal_vector[0] / np.linalg.norm(normal_vector))
+
+                # self.get_logger().info(f"Normal Vector: {normal_vector}")
+                self.get_logger().info(f"Angle with X-axis (in radians): {angle_with_x_axis}")
+                
+                pc_msg = Float64()
+                pc_msg.data = float(angle_with_x_axis)
+                self.pc_art_angle_pub_.publish(pc_msg)
+
                 header = self.point_cloud_header
-                inlier_cloud_msg = pc2.create_cloud_xyz32(header, inlier_points.tolist())
+                inlier_cloud_msg = pc2.create_cloud_xyz32(header, z_filtered[inlier_mask].tolist())
                 self.pc_pub_.publish(inlier_cloud_msg)
-                self.get_logger().info(f"Published RANSAC inlier point cloud within range ({min_range}, {max_range}).")
+                # self.get_logger().info("Published filtered point cloud with PCA plane analysis.")
             else:
                 self.get_logger().warn("No points met the z-coordinate filtering criteria after RANSAC.")
         else:
