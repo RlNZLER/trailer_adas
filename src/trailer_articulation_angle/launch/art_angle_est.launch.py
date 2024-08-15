@@ -14,5 +14,11 @@ def generate_launch_description():
             executable='point_cloud',
             name='point_cloud',
             output='screen'
+        ),
+        Node(
+            package='trailer_articulation_angle',
+            executable='kalman_filter',
+            name='kalman_filter',
+            output='screen'
         )
     ])
