@@ -22,7 +22,7 @@ class TruckHUD(Node):
         
         self.aa_ground_truth = 0
         self.aa_aruco_marker = 0
-        self.aa_point_cloud = 0
+        self.aa_range = 0
         self.aa_prediction = 0
         
         self.trailer_angle = 0
@@ -38,7 +38,7 @@ class TruckHUD(Node):
 
         self.aa_ground_truth_sub_ = self.create_subscription(Float64,'articulation_angle/ground_truth', self.aa_ground_truth_callback, 10)
         self.aa_aruco_marker_sub_ = self.create_subscription(Float64,'articulation_angle/markers', self.aa_aruco_marker_callback, 10)
-        self.aa_point_cloud_sub_ = self.create_subscription(Float64,'articulation_angle/point_cloud', self.aa_point_cloud_callback, 10)
+        self.aa_point_cloud_sub_ = self.create_subscription(Float64,'articulation_angle/range', self.aa_point_cloud_callback, 10)
         # self.aa_prediction_sub_ = self.create_subscription(Float32,'articulation_angle/prediction', self.aa_prediction_callback, 10)
         
         self.vehicle_status_sub_ = self.create_subscription(Float64MultiArray,'vehicle_status', self.vehicle_status_callback, 10)
@@ -50,7 +50,7 @@ class TruckHUD(Node):
         self.aa_aruco_marker = msg.data
         
     def aa_point_cloud_callback(self, msg):
-        self.aa_point_cloud = msg.data
+        self.aa_range = msg.data
         
     # def aa_prediction_callback(self, msg):
     #     self.aa_prediction = msg.data
@@ -139,10 +139,10 @@ class TruckHUD(Node):
         self.draw_text(surface, f'{self.aa_aruco_marker:.2f}', (720, 80), font)
 
         self.draw_text(surface, 'Point Cloud:', (580, 110), font)
-        self.draw_text(surface, f'{self.aa_point_cloud:.2f}', (720, 110), font)
+        self.draw_text(surface, f'{self.aa_range:.2f}', (720, 110), font)
 
         self.draw_text(surface, 'Prediction:', (580, 140), font)
-        self.draw_text(surface, f'{self.aa_point_cloud:.2f}', (720, 140), font)
+        self.draw_text(surface, f'{self.aa_range:.2f}', (720, 140), font)
 
     # Helper function to draw text on the screen
     def draw_text(self, surface, text, pos, font, color=BLACK):
