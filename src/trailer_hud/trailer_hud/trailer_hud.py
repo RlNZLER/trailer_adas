@@ -107,9 +107,9 @@ class TruckHUD(Node):
 
         # Draw dashed lines on both sides of the truck
         left_line_start = (truck_rect.left, truck_rect.bottom)
-        left_line_end = (truck_rect.left, truck_rect.bottom + 200)
+        left_line_end = (truck_rect.left, truck_rect.bottom + 250)
         right_line_start = (truck_rect.right, truck_rect.bottom)
-        right_line_end = (truck_rect.right, truck_rect.bottom + 200)
+        right_line_end = (truck_rect.right, truck_rect.bottom + 250)
 
         self.draw_dashed_line(surface, BLUE, left_line_start, left_line_end, width=2, dash_length=10)
         self.draw_dashed_line(surface, BLUE, right_line_start, right_line_end, width=2, dash_length=10)
@@ -136,6 +136,17 @@ class TruckHUD(Node):
         rotated_trailer_rect = rotated_trailer.get_rect(center=(trailer_center_x, trailer_center_y))
         surface.blit(rotated_trailer, rotated_trailer_rect.topleft)
         
+        # Draw the line extending from the back of the trailer
+        # Calculate the position of the back center of the trailer
+        back_of_trailer_x = trailer_center_x + math.sin(angle) * (self.trailer_height / 2)
+        back_of_trailer_y = trailer_center_y + math.cos(angle) * (self.trailer_height / 2)
+        
+        # Calculate the endpoint of the line extending 50 units from the back of the trailer
+        line_end_x = back_of_trailer_x + math.sin(angle) * 50
+        line_end_y = back_of_trailer_y + math.cos(angle) * 50
+        
+        # Draw the line
+        pygame.draw.line(surface, GREEN, (back_of_trailer_x, back_of_trailer_y), (line_end_x, line_end_y), 3)
 
     # Function to draw the dashboard on the left side
     def draw_left_dashboard(self, surface, font):
@@ -170,11 +181,11 @@ class TruckHUD(Node):
         self.draw_text(surface, 'ArUco Marker:', (580, 80), font)
         self.draw_text(surface, f'{self.aa_aruco_marker:.2f}', (720, 80), font)
 
-        self.draw_text(surface, 'Point Cloud:', (580, 110), font)
+        self.draw_text(surface, 'Range Sensor:', (580, 110), font)
         self.draw_text(surface, f'{self.aa_range:.2f}', (720, 110), font)
 
         self.draw_text(surface, 'Prediction:', (580, 140), font)
-        self.draw_text(surface, f'{self.aa_range:.2f}', (720, 140), font)
+        self.draw_text(surface, f'{self.aa_filtered:.2f}', (720, 140), font)
 
     # Helper function to draw text on the screen
     def draw_text(self, surface, text, pos, font, color=BLACK):
