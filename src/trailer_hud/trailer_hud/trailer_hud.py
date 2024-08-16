@@ -4,12 +4,12 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64, Float64MultiArray
 
-
 # Define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 
 class TruckHUD(Node):
     def __init__(self):
@@ -23,6 +23,7 @@ class TruckHUD(Node):
         self.aa_ground_truth = 0
         self.aa_aruco_marker = 0
         self.aa_range = 0
+        self.aa_filtered = 0
         self.aa_prediction = 0
         
         self.trailer_angle = 0
@@ -39,9 +40,11 @@ class TruckHUD(Node):
         self.aa_ground_truth_sub_ = self.create_subscription(Float64,'articulation_angle/ground_truth', self.aa_ground_truth_callback, 10)
         self.aa_aruco_marker_sub_ = self.create_subscription(Float64,'articulation_angle/markers', self.aa_aruco_marker_callback, 10)
         self.aa_point_cloud_sub_ = self.create_subscription(Float64,'articulation_angle/range', self.aa_point_cloud_callback, 10)
+        self.aa_filtered_sub_ = self.create_subscription(Float64,'articulation_angle/filtered', self.aa_filtered_callback, 10)
         # self.aa_prediction_sub_ = self.create_subscription(Float32,'articulation_angle/prediction', self.aa_prediction_callback, 10)
         
         self.vehicle_status_sub_ = self.create_subscription(Float64MultiArray,'vehicle_status', self.vehicle_status_callback, 10)
+
 
     def aa_ground_truth_callback(self, msg):
         self.aa_ground_truth = msg.data
@@ -51,6 +54,9 @@ class TruckHUD(Node):
         
     def aa_point_cloud_callback(self, msg):
         self.aa_range = msg.data
+        
+    def aa_filtered_callback(self, msg):
+        self.aa_filtered = msg.data
         
     # def aa_prediction_callback(self, msg):
     #     self.aa_prediction = msg.data
@@ -66,7 +72,24 @@ class TruckHUD(Node):
         self.steering_angle = msg.data[2]
         self.left_wheel_angle = msg.data[3]
         self.right_wheel_angle = msg.data[4]
-        
+
+    def draw_dashed_line(self, surface, color, start_pos, end_pos, width=1, dash_length=10):
+        # Calculate the length of the line
+        total_length = math.hypot(end_pos[0] - start_pos[0], end_pos[1] - start_pos[1])
+
+        # Calculate the number of dashes
+        num_dashes = int(total_length // dash_length)
+
+        for i in range(num_dashes + 1):
+            start = (
+                start_pos[0] + (end_pos[0] - start_pos[0]) * i / num_dashes,
+                start_pos[1] + (end_pos[1] - start_pos[1]) * i / num_dashes,
+            )
+            end = (
+                start_pos[0] + (end_pos[0] - start_pos[0]) * (i + 0.5) / num_dashes,
+                start_pos[1] + (end_pos[1] - start_pos[1]) * (i + 0.5) / num_dashes,
+            )
+            pygame.draw.line(surface, color, start, end, width)
 
     # Function to draw the truck
     def draw_truck(self, surface):
@@ -82,9 +105,18 @@ class TruckHUD(Node):
         truck_p_surface.fill(BLACK)
         surface.blit(truck_p_surface, truck_p_rect.topleft)
 
+        # Draw dashed lines on both sides of the truck
+        left_line_start = (truck_rect.left, truck_rect.bottom)
+        left_line_end = (truck_rect.left, truck_rect.bottom + 200)
+        right_line_start = (truck_rect.right, truck_rect.bottom)
+        right_line_end = (truck_rect.right, truck_rect.bottom + 200)
+
+        self.draw_dashed_line(surface, BLUE, left_line_start, left_line_end, width=2, dash_length=10)
+        self.draw_dashed_line(surface, BLUE, right_line_start, right_line_end, width=2, dash_length=10)
+
     # Function to draw the trailer with rotation
     def draw_trailer(self, surface):
-        angle = self.aa_ground_truth # Change articulation angle later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        angle = self.aa_filtered # Change articulation angle later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
         trailer_p_center_x = self.pivot[0] + math.sin(angle) * (39.2889/ 2)
         trailer_p_center_y = self.pivot[1] + math.cos(angle) * (39.2889/ 2)
@@ -103,7 +135,7 @@ class TruckHUD(Node):
         rotated_trailer = pygame.transform.rotate(trailer_surface, math.degrees(angle))
         rotated_trailer_rect = rotated_trailer.get_rect(center=(trailer_center_x, trailer_center_y))
         surface.blit(rotated_trailer, rotated_trailer_rect.topleft)
-
+        
 
     # Function to draw the dashboard on the left side
     def draw_left_dashboard(self, surface, font):
