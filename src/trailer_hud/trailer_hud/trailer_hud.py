@@ -184,7 +184,7 @@ class TruckHUD(Node):
         self.draw_text(surface, 'Range Sensor:', (580, 110), font)
         self.draw_text(surface, f'{self.aa_range:.2f}', (720, 110), font)
 
-        self.draw_text(surface, 'Prediction:', (580, 140), font)
+        self.draw_text(surface, 'Kalman Filter:', (580, 140), font)
         self.draw_text(surface, f'{self.aa_filtered:.2f}', (720, 140), font)
 
     # Helper function to draw text on the screen

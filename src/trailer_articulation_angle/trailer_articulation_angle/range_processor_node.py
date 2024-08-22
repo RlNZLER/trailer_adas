@@ -6,14 +6,14 @@ from sensor_msgs.msg import Range
 from std_msgs.msg import Float64
 import numpy as np
 
-class PointCloud(Node):
+class RangeProcessorNode(Node):
     def __init__(self):
-        super().__init__('point_cloud')
+        super().__init__('range_processor_node')
         
-        self.create_subscription(Range, 'range/u1', self.point_cloud_callback_u1, 10)
-        self.create_subscription(Range, 'range/u2', self.point_cloud_callback_u2, 10)
-        self.create_subscription(Range, 'range/u3', self.point_cloud_callback_u3, 10)
-        self.create_subscription(Range, 'range/u4', self.point_cloud_callback_u4, 10)
+        self.create_subscription(Range, 'range/u1', self.range_callback_u1, 10)
+        self.create_subscription(Range, 'range/u2', self.range_callback_u2, 10)
+        self.create_subscription(Range, 'range/u3', self.range_callback_u3, 10)
+        self.create_subscription(Range, 'range/u4', self.range_callback_u4, 10)
         
         # Publish the articulation angle in radians
         self.pc_art_angle_pub_ = self.create_publisher(Float64, 'articulation_angle/range', 10)
@@ -28,16 +28,16 @@ class PointCloud(Node):
         self.points_u3 = None
         self.points_u4 = None
 
-    def point_cloud_callback_u1(self, msg):
+    def range_callback_u1(self, msg):
         self.points_u1 = (self.x_u1, msg.range)
 
-    def point_cloud_callback_u2(self, msg):
+    def range_callback_u2(self, msg):
         self.points_u2 = (self.x_u2, msg.range)
 
-    def point_cloud_callback_u3(self, msg):
+    def range_callback_u3(self, msg):
         self.points_u3 = (self.x_u3, msg.range)
 
-    def point_cloud_callback_u4(self, msg):
+    def range_callback_u4(self, msg):
         self.points_u4 = (self.x_u4, msg.range)
 
     def calculate_articulation_angle(self):
@@ -66,9 +66,9 @@ class PointCloud(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    point_cloud_node = PointCloud()
-    rclpy.spin(point_cloud_node)
-    point_cloud_node.destroy_node()
+    range_node = RangeProcessorNode()
+    rclpy.spin(range_node)
+    range_node.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

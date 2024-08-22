@@ -23,9 +23,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "articulation_angle_node = trailer_articulation_angle.articulation_angle_node:main",
-            "point_cloud = trailer_articulation_angle.point_cloud:main",
-            "point_cloud_processor = trailer_articulation_angle.point_cloud_processor:main",
+            "aruco_marker_node = trailer_articulation_angle.aruco_marker_node:main",
+            "range_processor_node = trailer_articulation_angle.range_processor_node:main",
             "kalman_filter = trailer_articulation_angle.kalman_filter:main"
         ],
     },

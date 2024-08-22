@@ -13,9 +13,9 @@ from cv2 import aruco
 import numpy as np
 
 
-class ArticulationAngleNode(Node):
+class ArucoMarkerNode(Node):
     def __init__(self):
-        super().__init__('articulation_angle_node')
+        super().__init__('aruco_marker_node')
         
         # Publisher for articulation angle ground truth
         self.joint_state_subscriber = self.create_subscription(JointState, 'trailer/joint_states', self.joint_state_callback, 10)
@@ -120,7 +120,7 @@ class ArticulationAngleNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    aruco_detector = ArticulationAngleNode()
+    aruco_detector = ArucoMarkerNode()
     rclpy.spin(aruco_detector)
     aruco_detector.destroy_node()
     rclpy.shutdown()
