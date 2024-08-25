@@ -38,16 +38,16 @@ def main():
 
     # Command 4: launch the trailer controller.
     run_command_in_terminal('ros2 launch trailer_controller controller.launch.py')
-    time.sleep(10)  # Wait for navigation and amcl to start.
+    time.sleep(10)
 
     # Command 5: launch the trailer articulation angle estimation nodes.
     run_command_in_terminal('ros2 launch trailer_articulation_angle art_angle_est.launch.py')
 
-    # Command 6: run object detection node.
-    run_command_in_terminal('ros2 run plotjuggler plotjuggler')
+    # Command 6: launch the trailer HUD.
+    run_command_in_terminal('ros2 launch trailer_hud hud.launch.py')
 
-    # Command 7: run waypoint following node.
-    run_command_in_terminal('ros2 run trailer_hud trailer_hud')
+    # Command 7: run PlotJuggler for data visualization.
+    run_command_in_terminal('ros2 run plotjuggler plotjuggler')
 
 if __name__ == "__main__":
     main()
