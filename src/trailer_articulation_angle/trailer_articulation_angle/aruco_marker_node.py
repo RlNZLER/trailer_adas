@@ -20,6 +20,7 @@ class ArucoMarkerNode(Node):
         # Publisher for articulation angle ground truth
         self.joint_state_subscriber = self.create_subscription(JointState, 'trailer/joint_states', self.joint_state_callback, 10)
         self.ground_truth_publisher = self.create_publisher(Float64, 'articulation_angle/ground_truth', 10)
+        self.ground_truth_timestamp_publisher = self.create_publisher(Float64, 'articulation_angle/ground_truth_timestamp', 10)
         
         # Aruco marker detection
         self.camera_info_sub = self.create_subscription(CameraInfo, '/camera/depth/camera_info',self.camera_info_callback, qos_profile=qos.qos_profile_sensor_data)
@@ -27,6 +28,7 @@ class ArucoMarkerNode(Node):
         self.publisher_ = self.create_publisher(Image, '/markers/image_with_markers', 10)
         self.marker_pose_publisher = self.create_publisher(PoseArray, '/markers/poses', 10)
         self.marker_art_angle = self.create_publisher(Float64, 'articulation_angle/markers', 10)
+        self.marker_timestamp_publisher = self.create_publisher(Float64, 'articulation_angle/markers_timestamp', 10)
         
         self.bridge = CvBridge()
         self.aruco_dict = cv2.aruco.getPredefinedDictionary(aruco.DICT_6X6_250)
@@ -39,8 +41,13 @@ class ArucoMarkerNode(Node):
         if joint_name in msg.name:
             index = msg.name.index(joint_name)
             articulation_angle = - msg.position[index]
-
-            # Publishing the articulation angle
+            
+            # Publish timestamp as Float64
+            timestamp_msg = Float64()
+            timestamp_msg.data = self.get_clock().now().seconds_nanoseconds()[0] + self.get_clock().now().seconds_nanoseconds()[1] * 1e-9
+            self.ground_truth_timestamp_publisher.publish(timestamp_msg) # Publish the timestamp in seconds
+            
+            # Publishing the ground truth articulation angle
             angle_msg = Float64()
             angle_msg.data = articulation_angle
             self.ground_truth_publisher.publish(angle_msg) # Publish the articulation angle ground truth in radians
@@ -110,6 +117,13 @@ class ArucoMarkerNode(Node):
 
             slope, _ = np.polyfit(x_values, z_values, 1)
             articulation_angle = np.arctan(slope)
+            
+            # Publish timestamp as Float64
+            timestamp_msg = Float64()
+            timestamp_msg.data = self.get_clock().now().seconds_nanoseconds()[0] + self.get_clock().now().seconds_nanoseconds()[1] * 1e-9
+            self.marker_timestamp_publisher.publish(timestamp_msg)
+            
+            # Publish the marker articulation angle
             angle_msg = Float64()
             angle_msg.data = articulation_angle
             self.marker_art_angle.publish(angle_msg)
