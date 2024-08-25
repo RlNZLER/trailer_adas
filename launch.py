@@ -46,8 +46,5 @@ def main():
     # Command 6: launch the trailer HUD.
     run_command_in_terminal('ros2 launch trailer_hud hud.launch.py')
 
-    # Command 7: run PlotJuggler for data visualization.
-    run_command_in_terminal('ros2 run plotjuggler plotjuggler')
-
 if __name__ == "__main__":
     main()
