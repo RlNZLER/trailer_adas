@@ -25,6 +25,12 @@ def generate_launch_description():
         description='Absolute path to robot urdf file'
     )
     
+    world_arg = DeclareLaunchArgument(
+        name='world',
+        default_value=os.path.join(trailer_description, 'worlds', 'testing.world'),
+        description='Absolute path to world file'
+    )
+    
     robot_description = ParameterValue(Command(['xacro ', LaunchConfiguration("model")]), value_type=str)
     
     robot_state_publisher_node = Node(
@@ -38,7 +44,12 @@ def generate_launch_description():
         executable='joint_state_publisher',
     )
     
-    start_gazebo_server = IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')))
+    start_gazebo_server = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
+            ),
+        launch_arguments={'world': LaunchConfiguration('world')}.items()
+        )
     
     start_gazebo_client = IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')))
     
@@ -52,6 +63,7 @@ def generate_launch_description():
     return LaunchDescription([
         env_variable,
         model_arg,
+        world_arg,
         robot_state_publisher_node,
         joint_state_publisher_node,
         start_gazebo_server,
