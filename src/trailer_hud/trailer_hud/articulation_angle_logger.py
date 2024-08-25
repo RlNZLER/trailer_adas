@@ -12,25 +12,17 @@ class ArticulationAngleLogger(Node):
         super().__init__('articulation_angle_logger')
         
         # Initialize subscriptions
-        self.create_subscription(Float64, '/articulation_angle/ground_truth_timestamp', self.ground_truth_timestamp_callback, 10)
-        self.create_subscription(Float64, '/articulation_angle/ground_truth', self.ground_truth_callback, 10)
-        self.create_subscription(Float64, '/articulation_angle/markers_timestamp', self.markers_timestamp_callback, 10)
-        self.create_subscription(Float64, '/articulation_angle/markers', self.markers_callback, 10)
-        self.create_subscription(Float64, '/articulation_angle/range_timestamp', self.range_timestamp_callback, 10)
-        self.create_subscription(Float64, '/articulation_angle/range', self.range_callback, 10)
-        self.create_subscription(Float64, '/articulation_angle/kalman_timestamp', self.kalman_timestamp_callback, 10)
         self.create_subscription(Float64, '/articulation_angle/filtered', self.filtered_callback, 10)
+        self.create_subscription(Float64, '/articulation_angle/ground_truth', self.ground_truth_callback, 10)
+        self.create_subscription(Float64, '/articulation_angle/markers', self.markers_callback, 10)
+        self.create_subscription(Float64, '/articulation_angle/range', self.range_callback, 10)
         
         # Data storage dictionary
         self.data = {
             'timestamp': [],
-            'ground_truth_timestamp': [],
             'ground_truth': [],
-            'markers_timestamp': [],
             'markers': [],
-            'range_timestamp': [],
             'range': [],
-            'kalman_timestamp': [],
             'filtered': []
         }
         
@@ -48,21 +40,18 @@ class ArticulationAngleLogger(Node):
         self.timer_thread.start()
 
     def record_data(self, topic, value):
-        # Append timestamp for each data entry
+        # Get the current timestamp
         timestamp = self.get_clock().now().to_msg().sec + self.get_clock().now().to_msg().nanosec * 1e-9
-
-        self.data['timestamp'].append(timestamp)
-
-        # Add the value to the appropriate list in the dictionary
-        for key in self.data.keys():
-            if key == topic:
-                self.data[key].append(value)
-            elif key == 'timestamp':
-                continue
-            else:
-                # Ensure all lists are of equal length by appending None to missing data
-                if len(self.data[key]) < len(self.data['timestamp']):
+        
+        if not self.data['timestamp'] or self.data['timestamp'][-1] != timestamp:
+            # Create a new row if this is the first data point or if it's a new timestamp
+            self.data['timestamp'].append(timestamp)
+            for key in self.data.keys():
+                if key != 'timestamp':
                     self.data[key].append(None)
+        
+        # Update the most recent row with the new data
+        self.data[topic][-1] = value
 
     def filtered_callback(self, msg):
         self.record_data('filtered', msg.data)
@@ -70,23 +59,11 @@ class ArticulationAngleLogger(Node):
     def ground_truth_callback(self, msg):
         self.record_data('ground_truth', msg.data)
 
-    def ground_truth_timestamp_callback(self, msg):
-        self.record_data('ground_truth_timestamp', msg.data)
-
-    def kalman_timestamp_callback(self, msg):
-        self.record_data('kalman_timestamp', msg.data)
-
     def markers_callback(self, msg):
         self.record_data('markers', msg.data)
 
-    def markers_timestamp_callback(self, msg):
-        self.record_data('markers_timestamp', msg.data)
-
     def range_callback(self, msg):
         self.record_data('range', msg.data)
-
-    def range_timestamp_callback(self, msg):
-        self.record_data('range_timestamp', msg.data)
 
     def save_to_csv(self):
         # Convert the dictionary to a pandas DataFrame
