@@ -30,8 +30,6 @@ class ArticulationAngleFilter(Node):
             10)
         self.timer_ = self.create_timer(0.1, self.process_measurements)
         self.kalman_filter_publisher = self.create_publisher(Float64, 'articulation_angle/filtered', 10)
-        self.kalman_timestamp_publisher_ = self.create_publisher(Float64, 'articulation_angle/kalman_timestamp', 10)
-
 
     def listener_callback_markers(self, msg):
         self.measurement_buffer[0] = msg.data
@@ -51,11 +49,6 @@ class ArticulationAngleFilter(Node):
 
             # Reset measurement buffer
             self.measurement_buffer = [None, None]
-            
-            # Publish timestamp as Float64
-            timestamp_msg = Float64()
-            timestamp_msg.data = self.get_clock().now().seconds_nanoseconds()[0] + self.get_clock().now().seconds_nanoseconds()[1] * 1e-9
-            self.kalman_timestamp_publisher_.publish(timestamp_msg) # Publish the timestamp in seconds
             
             # Publish the filtered value
             filtered_value = Float64()

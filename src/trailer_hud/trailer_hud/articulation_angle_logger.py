@@ -12,10 +12,10 @@ class ArticulationAngleLogger(Node):
         super().__init__('articulation_angle_logger')
         
         # Initialize subscriptions
-        self.create_subscription(Float64, '/articulation_angle/filtered', self.filtered_callback, 10)
         self.create_subscription(Float64, '/articulation_angle/ground_truth', self.ground_truth_callback, 10)
         self.create_subscription(Float64, '/articulation_angle/markers', self.markers_callback, 10)
         self.create_subscription(Float64, '/articulation_angle/range', self.range_callback, 10)
+        self.create_subscription(Float64, '/articulation_angle/filtered', self.filtered_callback, 10)
         
         # Data storage dictionary
         self.data = {

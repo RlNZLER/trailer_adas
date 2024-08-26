@@ -17,8 +17,6 @@ class RangeProcessorNode(Node):
         
         # Publish the articulation angle in radians
         self.range_art_angle_pub_ = self.create_publisher(Float64, 'articulation_angle/range', 10)
-        self.range_timestamp_publisher_ = self.create_publisher(Float64, 'articulation_angle/range_timestamp', 10)
-
         
         self.timer_ = self.create_timer(0.1, self.calculate_articulation_angle)
         
@@ -60,11 +58,6 @@ class RangeProcessorNode(Node):
         
         # Calculate the angle of the slope in radians
         angle = -np.arctan(m)
-        
-        # Publish timestamp as Float64
-        timestamp_msg = Float64()
-        timestamp_msg.data = self.get_clock().now().seconds_nanoseconds()[0] + self.get_clock().now().seconds_nanoseconds()[1] * 1e-9
-        self.range_timestamp_publisher_.publish(timestamp_msg) # Publish the timestamp in seconds
             
         # Publish the articulation angle in radians
         msg = Float64()
