@@ -3,11 +3,14 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 
 # Load the data
-file_path = 'articulation_angle_log.csv'  # Replace with your file path
+file_path = 'Tests/Scenario 2/Test2/aggregated_data.csv'
 df = pd.read_csv(file_path)
 
+# Set marker column as a variable
+compare_column = 'range'
+
 # Ensure that timestamp is in datetime format
-df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
+df['timestamp'] = pd.to_datetime(df['timestamp'])
 
 # Normalize the time for easier slider control
 df['time_float'] = (df['timestamp'] - df['timestamp'].min()).dt.total_seconds()
@@ -16,9 +19,9 @@ df['time_float'] = (df['timestamp'] - df['timestamp'].min()).dt.total_seconds()
 fig, ax = plt.subplots(figsize=(12, 6))
 plt.subplots_adjust(left=0.1, bottom=0.25)
 
-# Plot initial data
-ground_truth_line, = ax.plot([], [], label='Ground Truth', marker='o', linestyle='-', color='blue')
-markers_line, = ax.plot([], [], label='Markers', marker='x', linestyle='--', color='green')
+# Plot initial data using color-blind safe colors
+ground_truth_line, = ax.plot([], [], label='Ground Truth', marker='o', linestyle='-', color='#377eb8')  # blue
+compare_line, = ax.plot([], [], label=compare_column.capitalize(), marker='x', linestyle='--', color='#ff7f00')  # orange
 
 # Set up the sliders for time range selection
 ax_time_start = plt.axes([0.1, 0.1, 0.65, 0.03], facecolor='lightgoldenrodyellow')
@@ -35,7 +38,7 @@ def update(val):
     df_filtered = df[(df['timestamp'] >= start_time) & (df['timestamp'] <= end_time)]
     
     ground_truth_line.set_data(df_filtered['timestamp'], df_filtered['ground_truth'])
-    markers_line.set_data(df_filtered['timestamp'], df_filtered['markers'])
+    compare_line.set_data(df_filtered['timestamp'], df_filtered[compare_column])
     
     ax.relim()
     ax.autoscale_view()
@@ -46,7 +49,7 @@ slider_time_start.on_changed(update)
 slider_time_end.on_changed(update)
 
 # Initial plot setup
-ax.set_title('Ground Truth and Markers over Time')
+ax.set_title('Ground Truth and ' + compare_column.capitalize() + ' over Time')
 ax.set_xlabel('Timestamp')
 ax.set_ylabel('Values')
 ax.legend()
