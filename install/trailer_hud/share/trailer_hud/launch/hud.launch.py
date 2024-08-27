@@ -18,10 +18,16 @@ def generate_launch_description():
             name='trailer_hud',
             output='screen',
         ), 
+        # Node(
+        #     package='trailer_hud',
+        #     executable='articulation_angle_logger',
+        #     name='articulation_angle_logger',
+        #     output='screen'
+        # ),
         Node(
             package='trailer_hud',
-            executable='articulation_angle_logger',
-            name='articulation_angle_logger',
+            executable='delay_logger',
+            name='delay_logger',
             output='screen'
         ),
         # Node(

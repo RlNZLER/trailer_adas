@@ -24,6 +24,12 @@ def generate_launch_description():
             name='articulation_angle_logger',
             output='screen'
         ),
+        Node(
+            package='trailer_hud',
+            executable='delay_logger',
+            name='delay_logger',
+            output='screen'
+        ),
         # Node(
         #     package='plotjuggler',
         #     executable='plotjuggler',

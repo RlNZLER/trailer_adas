@@ -24,7 +24,8 @@ setup(
     entry_points={
         'console_scripts': [
             "trailer_hud = trailer_hud.trailer_hud:main",
-            "articulation_angle_logger = trailer_hud.articulation_angle_logger:main"
+            "articulation_angle_logger = trailer_hud.articulation_angle_logger:main",
+            "delay_logger = trailer_hud.delay_logger:main",
         ],
     },
 )

@@ -4,6 +4,7 @@ import numpy as np
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64
+import time
 
 class ArticulationAngleFilter(Node):
     def __init__(self):
@@ -31,12 +32,20 @@ class ArticulationAngleFilter(Node):
         self.timer_ = self.create_timer(0.1, self.process_measurements)
         self.kalman_filter_publisher = self.create_publisher(Float64, 'articulation_angle/filtered', 10)
 
+        # Publisher for the time duration
+        self.time_publisher = self.create_publisher(Float64, 'articulation_angle/filter_delay', 10)
+        self.start_time = None  # Initialize start time
+
     def listener_callback_markers(self, msg):
         self.measurement_buffer[0] = msg.data
+        if self.start_time is None:
+            self.start_time = time.time()  # Record the start time when the first angle is received
         # self.get_logger().info(f'Received marker measurement: {msg.data}')
 
     def listener_callback_range(self, msg):
         self.measurement_buffer[1] = msg.data
+        if self.start_time is None:
+            self.start_time = time.time()  # Record the start time when the first angle is received
         # self.get_logger().info(f'Received range measurement: {msg.data}')
 
     def process_measurements(self):
@@ -54,6 +63,15 @@ class ArticulationAngleFilter(Node):
             filtered_value = Float64()
             filtered_value.data = self.x[0, 0]
             self.kalman_filter_publisher.publish(filtered_value)
+
+            # Calculate and publish the time duration
+            if self.start_time is not None:
+                end_time = time.time()
+                time_duration = end_time - self.start_time
+                time_msg = Float64()
+                time_msg.data = time_duration
+                self.time_publisher.publish(time_msg)
+                self.start_time = None  # Reset start time for the next cycle
 
     def kalman_predict(self):
         # Prediction step
