@@ -11,7 +11,7 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from cv2 import aruco
 import numpy as np
-
+import time 
 
 class ArucoMarkerNode(Node):
     def __init__(self):
@@ -27,6 +27,8 @@ class ArucoMarkerNode(Node):
         self.publisher_ = self.create_publisher(Image, '/markers/image_with_markers', 10)
         self.marker_pose_publisher = self.create_publisher(PoseArray, '/markers/poses', 10)
         self.marker_art_angle = self.create_publisher(Float64, 'articulation_angle/markers', 10)
+        
+        self.time_publisher = self.create_publisher(Float64, 'articulation_angle/marker_delay', 10)
                 
         self.bridge = CvBridge()
         self.aruco_dict = cv2.aruco.getPredefinedDictionary(aruco.DICT_6X6_250)
@@ -54,7 +56,9 @@ class ArucoMarkerNode(Node):
     def image_callback(self, msg):
         if self.camera_model is None:
             return  # Ensures the camera model is loaded
-
+        
+        start_time = time.time()  # Record the start time
+        
         try:
             frame = self.bridge.imgmsg_to_cv2(msg, "bgr8")
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -90,7 +94,17 @@ class ArucoMarkerNode(Node):
 
                 # Store the position data in the dictionary using the marker ID as the key
                 marker_positions[ids[i][0]] = (pose.position.x, pose.position.y, pose.position.z)
-                calculated_angle = self.calculate_articulation_angle(marker_positions)
+                
+            # Calculate the articulation angle after all markers have been processed
+            calculated_angle = self.calculate_articulation_angle(marker_positions)
+            
+            end_time = time.time()  # Record the end time
+            time_duration = end_time - start_time  # Calculate the time difference
+            
+            # Publish the time duration
+            time_msg = Float64()
+            time_msg.data = time_duration
+            self.time_publisher.publish(time_msg)
 
             # Publish the PoseArray
             pose_array.header.stamp = self.get_clock().now().to_msg()
@@ -99,6 +113,8 @@ class ArucoMarkerNode(Node):
 
         output_image = self.bridge.cv2_to_imgmsg(result, encoding='bgr8')
         self.publisher_.publish(output_image)
+        
+
         
     def calculate_articulation_angle(self, marker_positions):
         try:
