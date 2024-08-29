@@ -114,8 +114,6 @@ class ArucoMarkerNode(Node):
         output_image = self.bridge.cv2_to_imgmsg(result, encoding='bgr8')
         self.publisher_.publish(output_image)
         
-
-        
     def calculate_articulation_angle(self, marker_positions):
         try:
             x_values = [pos[0] for pos in marker_positions.values()]

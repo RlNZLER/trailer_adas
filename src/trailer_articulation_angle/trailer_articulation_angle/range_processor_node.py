@@ -5,8 +5,8 @@ from rclpy.node import Node
 from sensor_msgs.msg import Range
 from std_msgs.msg import Float64
 import numpy as np
-import time  # Import time module
-import threading  # For handling the short delay
+import time
+import threading
 
 class RangeProcessorNode(Node):
     def __init__(self):
