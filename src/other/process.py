@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 
 # Load the data
-file_path = 'Tests/Scenario 2/Test2/aggregated_data.csv'
+file_path = 'Tests/Scenario 4/Test3/aggregated_data.csv'
 df = pd.read_csv(file_path)
 
 # Set marker column as a variable
@@ -20,8 +20,8 @@ fig, ax = plt.subplots(figsize=(12, 6))
 plt.subplots_adjust(left=0.1, bottom=0.25)
 
 # Plot initial data using color-blind safe colors
-ground_truth_line, = ax.plot([], [], label='Ground Truth', marker='o', linestyle='-', color='#377eb8')  # blue
-compare_line, = ax.plot([], [], label=compare_column.capitalize(), marker='x', linestyle='--', color='#ff7f00')  # orange
+ground_truth_line, = ax.plot([], [], label='Ground Truth', marker='o', linestyle='-', color='#ffff33')  # blue
+compare_line, = ax.plot([], [], label=compare_column.capitalize(), marker='x', linestyle='--', color='#377eb8')  # orange
 
 # Set up the sliders for time range selection
 ax_time_start = plt.axes([0.1, 0.1, 0.65, 0.03], facecolor='lightgoldenrodyellow')
@@ -51,7 +51,7 @@ slider_time_end.on_changed(update)
 # Initial plot setup
 ax.set_title('Ground Truth and ' + compare_column.capitalize() + ' over Time')
 ax.set_xlabel('Timestamp')
-ax.set_ylabel('Values')
+ax.set_ylabel('Articulation Angle (radians)')
 ax.legend()
 ax.grid(True)
 
