@@ -46,7 +46,7 @@ Before running the simulation, ensure that the following software and dependenci
    ```
 
 2. **Install dependencies**:
-   Ensure all necessary ROS 2 and Gazebo dependencies are installed. Refer to the official [ROS 2 installation guide](https://docs.ros.org/en/foxy/Installation.html) for setting up your environment.
+   Ensure all necessary ROS 2 and Gazebo dependencies are installed. Refer to the official [ROS 2 installation guide](https://docs.ros.org/en/humble/index.html) for setting up your environment.
 
 3. **Add necessary texture files to Gazebo**:
 
